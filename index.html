@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>On the Road USA 2026 — Far West Road Trip</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
 :root{
   --ink:#0f1923;--sand:#f5efe6;--cream:#faf6f0;--rust:#c84b2f;--amber:#e8821a;
@@ -141,135 +141,100 @@ footer{background:var(--ink);color:rgba(255,255,255,.45);text-align:center;paddi
   .scene-row > div{height:160px}
 }
 @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
-/* animation handled by IntersectionObserver */
+/* animazione gestita da IntersectionObserver */
 
-/* ============================================================
-   ENHANCED STYLES — images, UX, animations
-   ============================================================ */
+/* ─── ENHANCED v3 ─── */
 
-/* Foto reali: zoom on hover */
-.scene-banner img, .scene-row > div img {
-  width:100%; height:100%; object-fit:cover; display:block;
-  transition: transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94);
+/* Foto */
+.scene-banner img,.scene-row>div img{
+  width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform .5s cubic-bezier(.25,.46,.45,.94);
 }
-.scene-banner:hover img, .scene-row > div:hover img {
-  transform: scale(1.04);
-}
-.scene-banner, .scene-row > div { overflow:hidden; }
+.scene-banner{position:relative;overflow:hidden;}
+.scene-banner:hover img,.scene-row>div:hover img{transform:scale(1.04);}
+.scene-row>div{overflow:hidden;}
 
-/* Reading progress bar */
-#prog-bar {
-  position:fixed; top:0; left:0; height:3px; width:0%;
-  background:linear-gradient(90deg, var(--amber), var(--rust));
-  z-index:9999; transition:width .08s linear;
-  box-shadow: 0 0 8px var(--amber);
+/* Caption hover */
+.scene-banner::after{
+  content:attr(data-cap);position:absolute;bottom:0;left:0;right:0;
+  padding:.4rem .8rem .5rem;background:linear-gradient(transparent,rgba(0,0,0,.55));
+  color:#fff;font-size:.72rem;letter-spacing:.05em;
+  opacity:0;transition:opacity .3s;pointer-events:none;
 }
+.scene-banner:hover::after{opacity:1;}
 
-/* Back-to-top button */
-#back-top {
-  position:fixed; bottom:1.8rem; right:1.8rem;
-  width:46px; height:46px; border-radius:50%;
-  background:var(--dusk); color:white;
-  border:none; font-size:1.2rem; cursor:pointer;
-  opacity:0; transform:translateY(20px);
-  transition:all .3s ease; z-index:500;
+/* Barra di lettura */
+#prog{position:fixed;top:0;left:0;height:3px;width:0%;z-index:9999;
+  background:linear-gradient(90deg,var(--amber),var(--rust));
+  box-shadow:0 0 6px rgba(232,130,26,.5);transition:width .07s linear;}
+
+/* Torna su */
+#top-btn{
+  position:fixed;bottom:1.8rem;right:1.8rem;width:46px;height:46px;
+  border-radius:50%;background:var(--dusk);color:#fff;border:none;
+  font-size:1.2rem;cursor:pointer;
+  opacity:0;transform:translateY(18px) scale(.8);
+  transition:all .3s ease;z-index:500;
   box-shadow:0 4px 18px rgba(0,0,0,.35);
-  display:flex; align-items:center; justify-content:center;
+  display:flex;align-items:center;justify-content:center;
 }
-#back-top.show { opacity:1; transform:translateY(0); }
-#back-top:hover { background:var(--amber); transform:translateY(-4px) !important; }
+#top-btn.show{opacity:1;transform:translateY(0) scale(1);}
+#top-btn:hover{background:var(--amber);transform:translateY(-4px) scale(1.1)!important;}
 
-/* Better nav active link */
-.nav-link.active { background:var(--amber) !important; color:#fff !important; }
+/* Mappa: assicura pointer-events SVG */
+#usa-map,#usa-map .wp,#usa-map .wp *{pointer-events:all;}
+#usa-map .wp{cursor:pointer;}
 
-/* Day-hdr improved */
-.day-hdr { position:relative; }
+/* Sezioni fade-in via JS */
+.day-section{opacity:0;transform:translateY(22px);
+  transition:opacity .55s ease,transform .55s ease;}
+.day-section.vis{opacity:1;transform:none;}
 
-/* Hero with real photo */
-.hero { position:relative; }
+/* Hover card attività */
+.activ{transition:box-shadow .2s,transform .2s;}
+.activ:hover{box-shadow:0 6px 22px rgba(0,0,0,.14);transform:translateY(-1px);}
+.activ:hover .activ-meta{background:var(--dusk);}
+.activ:hover .activ-name{color:#fff;}
+.activ:hover .activ-time{color:var(--gold);}
+.activ:hover .activ-loc{color:rgba(255,255,255,.65);}
 
-/* Image caption overlay on scene-banners */
-.scene-banner { position:relative; }
-.scene-banner figcaption {
-  position:absolute; bottom:0; left:0; right:0;
-  background:linear-gradient(transparent, rgba(0,0,0,.55));
-  color:white; font-size:.72rem; padding:.4rem .8rem .5rem;
-  letter-spacing:.06em; pointer-events:none;
-  opacity:0; transition:opacity .3s;
-}
-.scene-banner:hover figcaption { opacity:1; }
+/* Hover info-card */
+.info-card{transition:box-shadow .2s,transform .2s;}
+.info-card:hover{box-shadow:0 6px 22px rgba(0,0,0,.12);transform:translateY(-2px);}
 
-/* Better info-card hover */
-.info-card {
-  transition: box-shadow .2s, transform .2s;
-}
-.info-card:hover {
-  box-shadow:0 6px 24px rgba(0,0,0,.12);
-  transform:translateY(-2px);
-}
+/* Hover hotel-box */
+.hotel-box{transition:box-shadow .2s;}
+.hotel-box:hover{box-shadow:0 4px 16px rgba(106,27,154,.22);}
 
-/* Improved activ card hover */
-.activ { transition: box-shadow .2s, transform .2s; }
-.activ:hover { box-shadow:0 6px 22px rgba(0,0,0,.14); transform:translateY(-1px); }
-.activ:hover .activ-meta { background:var(--dusk); }
-.activ:hover .activ-name { color:white; }
-.activ:hover .activ-time { color:var(--gold); }
-.activ:hover .activ-loc  { color:rgba(255,255,255,.65); }
-.activ:hover .park-tag   { background:rgba(255,255,255,.1); color:var(--gold); border-color:var(--gold); }
+/* Tabella header */
+.itable th{background:linear-gradient(135deg,var(--dusk),var(--sky));}
 
-/* Day-section fade-in via JS (override static animation) */
-.day-section { opacity:0; transform:translateY(24px);
-  transition:opacity .5s ease, transform .5s ease; }
-.day-section.visible { opacity:1; transform:translateY(0); }
+/* Scrollbar */
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-track{background:var(--sand);}
+::-webkit-scrollbar-thumb{background:var(--dusk);border-radius:3px;}
 
-/* Hero stats stagger */
-.hero-stats > div { 
-  animation: fadeUp .6s ease both; 
-}
-.hero-stats > div:nth-child(1){animation-delay:.15s}
-.hero-stats > div:nth-child(2){animation-delay:.28s}
-.hero-stats > div:nth-child(3){animation-delay:.41s}
-.hero-stats > div:nth-child(4){animation-delay:.54s}
+/* Nav blur */
+nav{backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);}
 
-/* Better hotel-box */
-.hotel-box { transition:box-shadow .2s; }
-.hotel-box:hover { box-shadow:0 4px 16px rgba(106,27,154,.2); }
+/* Stats stagger */
+.hero-stats>div{animation:fadeUp .65s ease both;}
+.hero-stats>div:nth-child(1){animation-delay:.2s}
+.hero-stats>div:nth-child(2){animation-delay:.35s}
+.hero-stats>div:nth-child(3){animation-delay:.5s}
+.hero-stats>div:nth-child(4){animation-delay:.65s}
 
-/* Nav improvements */
-nav { backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); }
-
-/* Better table header gradient */
-.itable th { background:linear-gradient(135deg, var(--dusk), #2e5fa3); }
-
-/* Section entry separator */
-.sec-header { margin-top:.5rem; }
-
-/* Scrollbar thin */
-::-webkit-scrollbar { width:6px; }
-::-webkit-scrollbar-track { background:var(--sand); }
-::-webkit-scrollbar-thumb { background:var(--dusk); border-radius:3px; }
-
-/* Mobile polish */
 @media(max-width:640px){
-  #back-top { bottom:1rem; right:1rem; width:40px; height:40px; font-size:1rem; }
-  .scene-banner { height:160px !important; }
-  .scene-banner.tall { height:200px !important; }
-}
-
-/* Image loading shimmer */
-img[loading="lazy"] {
-  background:linear-gradient(90deg, #e0e6ed 25%, #f5efe6 50%, #e0e6ed 75%);
-  background-size:200% 100%;
+  #top-btn{bottom:1rem;right:1rem;width:40px;height:40px;font-size:1rem;}
+  .scene-banner{height:160px!important;}
+  .scene-banner.tall{height:200px!important;}
 }
 
 </style>
 </head>
 <body>
-
-<!-- Progress bar -->
-<div id="prog-bar"></div>
-<!-- Back to top -->
-<button id="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Torna su">↑</button>
+<div id="prog"></div>
+<button id="top-btn" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Torna in cima">↑</button>
 
 
 <nav>
@@ -298,7 +263,7 @@ img[loading="lazy"] {
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-img-bg" style="position:absolute;inset:0;background-image:url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=1400&q=85');background-size:cover;background-position:center;z-index:0;"></div><div class="hero-img-overlay" style="position:absolute;inset:0;background:linear-gradient(160deg,rgba(15,25,35,0.82) 0%,rgba(27,58,107,0.72) 45%,rgba(200,75,47,0.62) 100%);z-index:1;"></div>
+  <div style="position:absolute;inset:0;z-index:0;background:url('https://images.unsplash.com/photo-qqhOoTYNJNo?auto=format&fit=crop&w=1600&q=85') center/cover no-repeat;"></div><div style="position:absolute;inset:0;z-index:1;background:linear-gradient(160deg,rgba(15,25,35,.85) 0%,rgba(27,58,107,.75) 45%,rgba(200,75,47,.65) 100%);"></div>
   <div class="hero-content" style="position:relative;z-index:2;">
     <p class="hero-eyebrow">17 Agosto — 1 Settembre 2026</p>
     <h1 class="hero-title">On the Road<span>USA 2026</span></h1>
@@ -480,38 +445,22 @@ img[loading="lazy"] {
 <script>
 (function(){
   const tips = {
-    day2:"DAY 2 · Los Angeles
-Hollywood, Beverly Hills, Venice Beach",
-    day3:"DAY 3 · Pacific Coast Highway
-Malibu → Big Sur → Carmel",
-    day4:"DAY 4 · Silicon Valley → SF
-Apple, Google, Meta + Golden Gate",
-    day5:"DAY 5 · Alcatraz + SF → Sonora
-Alcatraz 9:40 · Partenza 16:00",
-    day6:"DAY 6 · Yosemite
-El Capitan · Half Dome · Glacier Point",
-    day7:"DAY 7 · Sequoia → Ridgecrest
-General Sherman · Moro Rock",
-    day8:"DAY 8 · Death Valley + Las Vegas
-Badwater · Dune · Strip",
-    day9:"DAY 9 · Las Vegas Day 2
-Valley of Fire · Neon Museum · Sphere",
-    day10:"DAY 10 · Las Vegas → Zion
-The Narrows · Canyon Overlook",
-    day11:"DAY 11 · Bryce + Horseshoe Bend
-Navajo Loop · Horseshoe Bend",
-    day12:"DAY 12 · Antelope + Monument Valley
-11:40 Canyon X · 16:30 Jeep Tour",
-    day13:"DAY 13 · Grand Canyon South Rim
-Desert View · Hopi Point tramonto",
-    day14:"DAY 14 · Route 66
-Seligman · Oatman · Pioneertown",
-    day15:"DAY 15 · Joshua Tree
-Skull Rock · Keys View · Hidden Valley",
-    day15b:"DAY 15b · San Diego
-Sunset Cliffs · Old Town · Gaslamp",
-    day16:"DAY 16 · LAX → Roma FCO
-Volo ore 20:00"
+    day2:"DAY 2 · Los Angeles\nHollywood, Beverly Hills, Venice Beach",
+    day3:"DAY 3 · Pacific Coast Highway\nMalibu → Big Sur → Carmel",
+    day4:"DAY 4 · Silicon Valley → SF\nApple, Google, Meta + Golden Gate",
+    day5:"DAY 5 · Alcatraz + SF → Sonora\nAlcatraz 9:40 · Partenza 16:00",
+    day6:"DAY 6 · Yosemite\nEl Capitan · Half Dome · Glacier Point",
+    day7:"DAY 7 · Sequoia → Ridgecrest\nGeneral Sherman · Moro Rock",
+    day8:"DAY 8 · Death Valley + Las Vegas\nBadwater · Dune · Strip",
+    day9:"DAY 9 · Las Vegas Day 2\nValley of Fire · Neon Museum · Sphere",
+    day10:"DAY 10 · Las Vegas → Zion\nThe Narrows · Canyon Overlook",
+    day11:"DAY 11 · Bryce + Horseshoe Bend\nNavajo Loop · Horseshoe Bend",
+    day12:"DAY 12 · Antelope + Monument Valley\n11:40 Canyon X · 16:30 Jeep Tour",
+    day13:"DAY 13 · Grand Canyon South Rim\nDesert View · Hopi Point tramonto",
+    day14:"DAY 14 · Route 66\nSeligman · Oatman · Pioneertown",
+    day15:"DAY 15 · Joshua Tree\nSkull Rock · Keys View · Hidden Valley",
+    day15b:"DAY 15b · San Diego\nSunset Cliffs · Old Town · Gaslamp",
+    day16:"DAY 16 · LAX → Roma FCO\nVolo ore 20:00"
   };
   document.querySelectorAll('.wp').forEach(el => {
     const tt = document.getElementById('map-tooltip');
@@ -600,7 +549,7 @@ Volo ore 20:00"
     <div class="day-num"><span class="label">DAY 2</span><span class="date">Lun 18 Agosto</span></div>
     <div class="day-info"><h3>Los Angeles — Hollywood, Beverly Hills & Spiagge</h3><p>~65 km in città · Ritiro auto ore 9:00 a ONT · ~72 km</p></div>
     </div>
-  <div class="scene-banner"><img src="https://images.unsplash.com/photo-1580655653885-65763b2597d0?auto=format&fit=crop&w=1400&q=85" alt="Hollywood" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy"></div>
+  <div class="scene-banner"><img src="https://images.unsplash.com/photo-1580655653885-65763b2597d0?auto=format&fit=crop&w=1400&q=85" alt="Hollywood" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy" onerror="this.style.background='#1b3a6b'"></div>
   <div class="transport">
     <div class="transport-hdr">🚗 COME MUOVERSI — LOS ANGELES</div>
     <div class="transport-col"><h4>🚗 Auto</h4>Necessaria da ONT a Hollywood (72 km, I-10 W poi CA-110 N). Parcheggiare in garage a Hollywood ($15-20/giorno). Per Beverly Hills: parcheggio gratuito su Canon Dr o Rodeo Dr (2h limit). Per Venice/Santa Monica: lotto Lot 8 Santa Monica (~$12 giornaliero).</div>
@@ -702,7 +651,7 @@ Volo ore 20:00"
     <div class="day-num"><span class="label">DAY 3</span><span class="date">Mar 19 Agosto</span></div>
     <div class="day-info"><h3>Pacific Coast Highway — Malibu → Big Sur → Carmel</h3><p>~480 km · Partenza ore 7:30 · Dormire Santa Clara</p></div>
     </div>
-  <div class="scene-banner tall"><img src="https://images.unsplash.com/photo-1561328399-f94d2de78605?auto=format&fit=crop&w=1400&q=85" alt="Pch" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy"></div>
+  <div class="scene-banner tall"><img src="https://images.unsplash.com/photo-1449034446853-66c86144b0ad?auto=format&fit=crop&w=1400&q=85" alt="Pch" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy" onerror="this.style.background='#1b3a6b'"></div>
   <div class="alert blue"><span class="alert-ic">🌊</span><div>La PCH (US-1) è la strada panoramica più bella del mondo. NON seguire la I-5 — restare sempre sulla US-1. Fare il pieno a Malibu prima di entrare in Big Sur (80 km senza stazioni).</div></div>
   <p class="stitle ">MATTINA — Malibu & Santa Barbara (7:30–12:00)</p>
   <div class="activ">
@@ -789,7 +738,7 @@ Volo ore 20:00"
     <div class="day-num"><span class="label">DAY 4</span><span class="date">Mer 20 Agosto</span></div>
     <div class="day-info"><h3>Silicon Valley (2h rapidi) → San Francisco</h3><p>Partenza da Santa Clara ore 9:00 · ~55 km → SF</p></div>
     </div>
-  <div class="scene-row two"><div><img src="https://images.unsplash.com/photo-1573804633927-bfcbcd909acd?auto=format&fit=crop&w=1400&q=85" alt="Sv" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy"></div><div><img src="https://images.unsplash.com/photo-1501594907352-04cda38ebc29?auto=format&fit=crop&w=1400&q=85" alt="Gg" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy"></div></div>
+  <div class="scene-row two"><div><img src="https://images.unsplash.com/photo-1486325212027-8081e485255e?auto=format&fit=crop&w=1400&q=85" alt="Sv" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy" onerror="this.style.background='#1b3a6b'"></div><div><img src="https://images.unsplash.com/photo-1501594907352-04cda38ebc29?auto=format&fit=crop&w=1400&q=85" alt="Gg" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy" onerror="this.style.background='#1b3a6b'"></div></div>
   <div class="alert blue"><span class="alert-ic">💡</span><div><strong>Silicon Valley in 2 ore:</strong> giro rapido solo esterno, 20 min per campus, foto veloci e ripartire. Da Santa Clara a Menlo Park sono ~30 km totali.</div></div>
   <p class="stitle blue">MATTINA — Giro Rapido Silicon Valley (9:00–11:00)</p>
   <div class="activ">
@@ -872,7 +821,7 @@ Volo ore 20:00"
     <div class="day-num"><span class="label">DAY 5</span><span class="date">Gio 21 Agosto</span></div>
     <div class="day-info"><h3>San Francisco: Alcatraz + Giro Città → Sonora</h3><p>Alcatraz 9:40 · SF fino 16:00 · Partenza Sonora · ~220 km</p></div>
     </div>
-  <div class="scene-banner"><img src="https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&w=1400&q=85" alt="Alcatraz" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy"></div>
+  <div class="scene-banner"><img src="https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&w=1400&q=85" alt="Alcatraz" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy" onerror="this.style.background='#1b3a6b'"></div>
   <div class="alert red"><span class="alert-ic">🔴</span><div><strong>Alcatraz:</strong> alcatrazcruises.com — 2-3 settimane prima. Tour 9:40, ~$45/pp. Pier 33 alle 9:10 (30 min prima). Pier 33: 15 min in Muni dall'hotel o Uber ~$12.</div></div>
   <p class="stitle ">MATTINA — Alcatraz (8:30–13:30)</p>
   <div class="activ">
@@ -949,7 +898,7 @@ Volo ore 20:00"
     <div class="day-num"><span class="label">DAY 6</span><span class="date">Ven 22 Agosto</span></div>
     <div class="day-info"><h3>Yosemite National Park</h3><p>~70 km da Sonora · Partenza ore 6:30 — arrivare presto!</p></div>
     </div>
-  <div class="scene-banner tall"><img src="https://images.unsplash.com/photo-1562310503-a918c4c61e38?auto=format&fit=crop&w=1400&q=85" alt="Yosemite" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy"></div>
+  <div class="scene-banner tall"><img src="https://images.unsplash.com/photo-FT9mZfK3E5o?auto=format&fit=crop&w=1400&q=85" alt="Yosemite" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy" onerror="this.style.background='#1b3a6b'"></div>
   <div class="alert red"><span class="alert-ic">⚠️</span><div>Verificare su recreation.gov il <strong>Timed Entry Permit</strong> (obbligatorio maggio-settembre, ~$2). America the Beautiful Pass vale come ingresso. Ingresso: <strong>Big Oak Flat Entrance</strong> su CA-120 (~70 km da Sonora, ~1h).</div></div>
   <div class="navette"><div class="navette-hdr">🚌 SISTEMA NAVETTE YOSEMITE — Leggere prima di arrivare</div><div class="navette-row"><span class="nav-ic">🅿️</span><div><strong>Dove parcheggiare:</strong> Valley Visitor Center Lot (il più grande, gratuito). Si riempie ENTRO le 9:00. Con partenza alle 6:30 da Sonora si arriva alle 7:30 — trovare posto garantito. Alternativa: Day Hiker Lot vicino a Curry Village.</div></div><div class="navette-row"><span class="nav-ic">🔵</span><div><strong>Valley Shuttle (linea blu):</strong> 14 fermate circolari. Ogni 10-20 min, 7:00–22:00. <strong>GRATUITA.</strong> Parcheggiare al Visitor Center (fermata 5) e usarla per tutto.</div></div><div class="navette-row"><span class="nav-ic">🟡</span><div><strong>Glacier Point Shuttle:</strong> ~$10/pp A/R. Da Bridalveil Creek al Glacier Point. Solo se strada aperta (aprile-novembre).</div></div><div class="navette-row"><span class="nav-ic">💡</span><div><strong>Strategia:</strong> Parcheggiare al Visitor Center alle 7:30 → navetta fino all'ultima fermata → tornare indietro scendendo. Così si inizia dai trail più lontani freschi.</div></div></div>
   <p class="stitle ">MATTINA — Yosemite Valley (7:30–13:00)</p>
@@ -1018,7 +967,7 @@ Volo ore 20:00"
     <div class="day-num"><span class="label">DAY 7</span><span class="date">Sab 23 Agosto</span></div>
     <div class="day-info"><h3>Sequoia National Park → Ridgcrest</h3><p>~75 km da Fresno · Partenza ore 7:30 · ~240 km per Ridgcrest</p></div>
     </div>
-  <div class="scene-banner"><img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1400&q=85" alt="Sequoia" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy"></div>
+  <div class="scene-banner"><img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1400&q=85" alt="Sequoia" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy" onerror="this.style.background='#1b3a6b'"></div>
   <div class="alert orange"><span class="alert-ic">⚠️</span><div>Ingresso: <strong>Big Stump Entrance</strong> su CA-180 (~75 km da Fresno, ~1h). Le strade interne (Generals Highway) sono strette e tortuose — guidare lento con l'SUV. America the Beautiful Pass vale come ingresso.</div></div>
   <div class="activ">
       <div class="activ-meta">
@@ -1076,7 +1025,7 @@ Volo ore 20:00"
     <div class="day-num"><span class="label">DAY 8</span><span class="date">Dom 24 Agosto</span></div>
     <div class="day-info"><h3>Death Valley (Mattina) + Las Vegas (Sera)</h3><p>Partenza ore 6:00! · ~135 km DV · ~175 km LV</p></div>
     </div>
-  <div class="scene-row two"><div><img src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1400&q=85" alt="Death" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy"></div><div><img src="https://images.unsplash.com/photo-1605833556294-ea5c7a74f57d?auto=format&fit=crop&w=1400&q=85" alt="Vegas" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy"></div></div>
+  <div class="scene-row two"><div><img src="https://images.unsplash.com/photo-1531174525666-b7e2b9a4d7e9?auto=format&fit=crop&w=1400&q=85" alt="Death" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy" onerror="this.style.background='#1b3a6b'"></div><div><img src="https://images.unsplash.com/photo-9qFcebFl7Vo?auto=format&fit=crop&w=1400&q=85" alt="Vegas" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy" onerror="this.style.background='#1b3a6b'"></div></div>
   <div class="alert red"><span class="alert-ic">🌡️</span><div><strong>AGOSTO = IL POSTO PIÙ CALDO DELLA TERRA.</strong> 47–57°C nel fondovalle. Regole: (1) 4+ litri d'acqua a persona, (2) no trail 10:30–15:00, (3) AC sempre acceso, (4) scarpe chiuse obbligatorie, (5) guasto? restare in auto e chiamare i soccorsi al 911.</div></div>
   <p class="stitle ">ALBA — Death Valley (6:00–12:00)</p>
   <div class="activ">
@@ -1155,7 +1104,7 @@ Volo ore 20:00"
     <div class="day-num"><span class="label">DAY 9</span><span class="date">Lun 25 Agosto</span></div>
     <div class="day-info"><h3>Las Vegas — Valley of Fire + Strip in Dettaglio</h3><p>Mattina natura · Pomeriggio/sera sulla Strip</p></div>
     </div>
-  <div class="scene-banner"><img src="https://images.unsplash.com/photo-1605833556294-ea5c7a74f57d?auto=format&fit=crop&w=1400&q=85" alt="Vegas" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy"></div>
+  <div class="scene-banner"><img src="https://images.unsplash.com/photo-9qFcebFl7Vo?auto=format&fit=crop&w=1400&q=85" alt="Vegas" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy" onerror="this.style.background='#1b3a6b'"></div>
   <div class="activ">
       <div class="activ-meta">
         <span class="activ-name">Valley of Fire State Park</span>
@@ -1220,7 +1169,7 @@ Volo ore 20:00"
     <div class="day-num"><span class="label">DAY 10</span><span class="date">Mar 26 Agosto</span></div>
     <div class="day-info"><h3>Las Vegas → Zion National Park → Hatch</h3><p>~165 km LV→Zion · ~110 km Zion→Hatch · Partenza ore 7:00</p></div>
     </div>
-  <div class="scene-banner tall"><img src="https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?auto=format&fit=crop&w=1400&q=85" alt="Zion" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy"></div>
+  <div class="scene-banner tall"><img src="https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?auto=format&fit=crop&w=1400&q=85" alt="Zion" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy" onerror="this.style.background='#1b3a6b'"></div>
   <div class="navette"><div class="navette-hdr">🚌 SISTEMA NAVETTE ZION — Da marzo a novembre auto VIETATE sulla Zion Canyon Scenic Drive</div><div class="navette-row"><span class="nav-ic">🅿️</span><div><strong>Dove parcheggiare:</strong> Zion Canyon Visitor Center — parcheggio GRATUITO ma si riempie entro le 8:30 in agosto. Arrivare entro le 9:00. Alternativa: parcheggiare a Springdale (gratuito) e prendere la navetta viola fino al parco.</div></div><div class="navette-row"><span class="nav-ic">🟠</span><div><strong>Navetta arancione (Zion Canyon Shuttle):</strong> 9 fermate da Visitor Center a Temple of Sinawava. Ogni 7 min in alta stagione. <strong>GRATUITA.</strong></div></div><div class="navette-row"><span class="nav-ic">🟣</span><div><strong>Navetta viola (Springdale Shuttle):</strong> Springdale ↔ ingresso parco. Gratuita. Utile se si parcheggia a Springdale (gratuito su Zion Park Blvd).</div></div><div class="navette-row"><span class="nav-ic">💡</span><div><strong>Strategia:</strong> Parcheggiare alle 9:00 al Visitor Center → subito navetta fino all'ultima fermata (Temple of Sinawava) → tornare indietro scendendo alle fermate.</div></div></div>
   <div class="activ">
       <div class="activ-meta">
@@ -1277,7 +1226,7 @@ Volo ore 20:00"
     <div class="day-num"><span class="label">DAY 11</span><span class="date">Mer 27 Agosto</span></div>
     <div class="day-info"><h3>Bryce Canyon + Horseshoe Bend → Page</h3><p>~50 km Hatch→Bryce · ~220 km → Horseshoe · ~7 km → Page</p></div>
     </div>
-  <div class="scene-row two"><div><img src="https://images.unsplash.com/photo-1566044822034-d3c2d04e4e02?auto=format&fit=crop&w=1400&q=85" alt="Bryce" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy"></div><div><img src="https://images.unsplash.com/photo-1516483638261-f4dbaf036963?auto=format&fit=crop&w=1400&q=85" alt="Antelope" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy"></div></div>
+  <div class="scene-row two"><div><img src="https://images.unsplash.com/photo-1566044822034-d3c2d04e4e02?auto=format&fit=crop&w=1400&q=85" alt="Bryce" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy" onerror="this.style.background='#1b3a6b'"></div><div><img src="https://images.unsplash.com/photo-1516483638261-f4dbaf036963?auto=format&fit=crop&w=1400&q=85" alt="Antelope" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy" onerror="this.style.background='#1b3a6b'"></div></div>
   <div class="alert orange"><span class="alert-ic">⛄</span><div>Bryce Canyon a 2.400–2.700 m: freddo al mattino (10°C). Portare giacca. <strong>Strategia:</strong> iniziare da Rainbow Point (il più a sud) e tornare verso nord — così non si torna indietro mai.</div></div>
   <div class="navette"><div class="navette-hdr">🚌 NAVETTE BRYCE CANYON — da maggio a ottobre</div><div class="navette-row"><span class="nav-ic">🅿️</span><div><strong>Dove parcheggiare:</strong> Bryce Canyon Visitor Center — GRATUITO, ampio. Poi usare la navetta per tutti i viewpoint. I parcheggi ai singoli viewpoint sono piccoli (10-20 posti).</div></div><div class="navette-row"><span class="nav-ic">🟢</span><div><strong>Shuttle Loop:</strong> Collega tutti i viewpoint principali da Ruby's Inn al Bryce Point. Gratuito. Ogni 12-15 min in alta stagione.</div></div><div class="navette-row"><span class="nav-ic">💡</span><div><strong>Strategia Rainbow Point:</strong> Guidare fino a Rainbow Point con l'auto (è permesso), poi prendere la navetta verso nord scendendo ai viewpoint — così si risparmia tempo.</div></div></div>
   <div class="activ">
@@ -1344,7 +1293,7 @@ Volo ore 20:00"
     <div class="day-num"><span class="label">DAY 12</span><span class="date">Gio 28 Agosto</span></div>
     <div class="day-info"><h3>Biidi The Arch + Antelope Canyon X + Monument Valley</h3><p>⭐ Antelope Canyon X 11:40 · Monument Valley 16:30</p></div>
     </div>
-  <div class="scene-row two"><div><img src="https://images.unsplash.com/photo-1516483638261-f4dbaf036963?auto=format&fit=crop&w=1400&q=85" alt="Antelope" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy"></div><div><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=1400&q=85" alt="Monument" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy"></div></div>
+  <div class="scene-row two"><div><img src="https://images.unsplash.com/photo-1516483638261-f4dbaf036963?auto=format&fit=crop&w=1400&q=85" alt="Antelope" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy" onerror="this.style.background='#1b3a6b'"></div><div><img src="https://images.unsplash.com/photo-qqhOoTYNJNo?auto=format&fit=crop&w=1600&q=85" alt="Monument" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy" onerror="this.style.background='#1b3a6b'"></div></div>
   <div class="alert red"><span class="alert-ic">📌</span><div><strong>Orari fissi!</strong> Antelope Canyon X 11:40 (arrivare 20 min prima alle 11:20). Monument Valley 16:30. Page→Monument Valley: ~195 km / ~2h15 — partire entro le 13:15 senza sosta.</div></div>
   <p class="stitle ">MATTINA — Page (7:30–11:00)</p>
   <div class="activ">
@@ -1413,7 +1362,7 @@ Volo ore 20:00"
     <div class="day-num"><span class="label">DAY 13</span><span class="date">Ven 29 Agosto</span></div>
     <div class="day-info"><h3>Grand Canyon National Park — South Rim</h3><p>~105 km da Tuba City · Partenza ore 6:00 — alba al canyon!</p></div>
     </div>
-  <div class="scene-banner tall"><img src="https://images.unsplash.com/photo-1474044159687-1ee9f3a51722?auto=format&fit=crop&w=1400&q=85" alt="Canyon" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy"></div>
+  <div class="scene-banner tall"><img src="https://images.unsplash.com/photo-1474044159687-1ee9f3a51722?auto=format&fit=crop&w=1400&q=85" alt="Canyon" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy" onerror="this.style.background='#1b3a6b'"></div>
   <div class="navette"><div class="navette-hdr">🚌 SISTEMA NAVETTE GRAND CANYON — Come visitarlo nel modo migliore</div><div class="navette-row"><span class="nav-ic">🅿️</span><div><strong>Dove parcheggiare:</strong> Grand Canyon Visitor Center Plaza (gratuito, 24h, ampio). Da qui prendere TUTTE le navette. NON tentare i viewpoint in auto — posti esauriti alle 8:00 in agosto.</div></div><div class="navette-row"><span class="nav-ic">🟠</span><div><strong>Navetta arancione (Village Route):</strong> Visitor Center ↔ Grand Canyon Village. Ogni 10 min.</div></div><div class="navette-row"><span class="nav-ic">🔴</span><div><strong>Navetta rossa (Hermit Road):</strong> Village → Hermits Rest (8 km, 9 fermate). Auto VIETATE marzo-novembre. Ogni 10-15 min. Unico modo per vedere Hopi Point, Mohave Point, The Abyss.</div></div><div class="navette-row"><span class="nav-ic">🔵</span><div><strong>Navetta blu (Kaibab/Rim):</strong> Visitor Center → Yaki Point (South Kaibab Trailhead). Auto vietate su Yaki Point Rd.</div></div><div class="navette-row"><span class="nav-ic">🟡</span><div><strong>Desert View Drive:</strong> Auto ammesse da est verso ovest — usarla al mattino presto per Desert View Watchtower.</div></div></div>
   <p class="stitle ">MATTINA — Desert View Drive (7:00–12:00)</p>
   <div class="activ">
@@ -1491,7 +1440,7 @@ Volo ore 20:00"
     <div class="day-num"><span class="label">DAY 14</span><span class="date">Sab 30 Agosto</span></div>
     <div class="day-info"><h3>Route 66 Completa — Williams → Palm Desert</h3><p>~530 km · Partenza ore 8:00 · Giornata iconica!</p></div>
     </div>
-  <div class="scene-banner"><img src="https://images.unsplash.com/photo-1503435980610-a51f3ddfee50?auto=format&fit=crop&w=1400&q=85" alt="Route66" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy"></div>
+  <div class="scene-banner"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=1400&q=85" alt="Route66" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy" onerror="this.style.background='#1b3a6b'"></div>
   <div class="alert orange"><span class="alert-ic">🛣️</span><div>NON seguire la I-40 — usare sempre la US-66 storica anche se più lenta. Tappe in ordine: Grand Canyon Caverns → Seligman → Hackberry → Kingman → Cool Springs → Oatman → Needles → Mojave → Pioneertown.</div></div>
   <div class="activ">
       <div class="activ-meta">
@@ -1575,7 +1524,7 @@ Volo ore 20:00"
     <div class="day-num"><span class="label">DAY 15</span><span class="date">Dom 31 Agosto</span></div>
     <div class="day-info"><h3>Joshua Tree + San Diego</h3><p>Partenza Palm Desert 6:30 · JT 7:00–12:00 · SD pomeriggio</p></div>
     </div>
-  <div class="scene-row two"><div><img src="https://images.unsplash.com/photo-1580889059533-cb38bbf5b0e7?auto=format&fit=crop&w=1400&q=85" alt="Joshua" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy"></div><div><img src="https://images.unsplash.com/photo-1569950044822-2f727b52d9ed?auto=format&fit=crop&w=1400&q=85" alt="Sandiego" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy"></div></div>
+  <div class="scene-row two"><div><img src="https://images.unsplash.com/photo-1580889059533-cb38bbf5b0e7?auto=format&fit=crop&w=1400&q=85" alt="Joshua" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy" onerror="this.style.background='#1b3a6b'"></div><div><img src="https://images.unsplash.com/photo-1565596673532-2d2a25ca2e58?auto=format&fit=crop&w=1400&q=85" alt="Sandiego" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy" onerror="this.style.background='#1b3a6b'"></div></div>
   <div class="alert red"><span class="alert-ic">🌡️</span><div>Joshua Tree agosto: 42°C. Fare il parco SOLO 6:30–12:00. Portare 3+ litri d'acqua. Niente trail dopo le 11:00.</div></div>
   <div class="activ">
       <div class="activ-meta">
@@ -1667,7 +1616,7 @@ Volo ore 20:00"
     <div class="day-num"><span class="label">DAY 16</span><span class="date">Lun 1 Settembre</span></div>
     <div class="day-info"><h3>Los Angeles → Volo LAX → Roma FCO</h3><p>Volo LAX ore 20:00 · Arrivo Roma 2 Settembre ore 20:00</p></div>
     </div>
-  <div class="scene-banner"><img src="https://images.unsplash.com/photo-1580655653885-65763b2597d0?auto=format&fit=crop&w=1400&q=85" alt="Hollywood" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy"></div>
+  <div class="scene-banner"><img src="https://images.unsplash.com/photo-1609840114035-3c981b782dfe?auto=format&fit=crop&w=1400&q=85" alt="Universal" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy" onerror="this.style.background='#1b3a6b'"></div>
   <div class="alert blue"><span class="alert-ic">⏰</span><div>Consegnare l'auto a LAX entro le 17:00 (3h prima del volo). La mattina è LIBERA!</div></div>
   <div class="activ">
       <div class="activ-meta">
@@ -1817,20 +1766,19 @@ Volo ore 20:00"
 
 <script>
 (function(){
-  // Progress bar + back-to-top
-  const bar = document.getElementById('prog-bar');
-  const btn = document.getElementById('back-top');
-  window.addEventListener('scroll', function(){
-    const h = document.body.scrollHeight - window.innerHeight;
-    bar.style.width = (window.scrollY / h * 100) + '%';
-    btn.classList.toggle('show', window.scrollY > 500);
-  }, {passive:true});
+  // Progress bar + torna su
+  var bar=document.getElementById('prog'), btn=document.getElementById('top-btn');
+  window.addEventListener('scroll',function(){
+    var h=document.body.scrollHeight-window.innerHeight;
+    bar.style.width=(h>0?window.scrollY/h*100:0)+'%';
+    btn.classList.toggle('show',window.scrollY>450);
+  },{passive:true});
 
-  // Intersection observer for fade-in
-  const io = new IntersectionObserver(entries => {
-    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
-  }, {threshold:0.08, rootMargin:'0px 0px -40px 0px'});
-  document.querySelectorAll('.day-section').forEach(s => io.observe(s));
+  // Fade-in sezioni con IntersectionObserver
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){if(e.isIntersecting)e.target.classList.add('vis');});
+  },{threshold:0.07,rootMargin:'0px 0px -30px 0px'});
+  document.querySelectorAll('.day-section').forEach(function(s){io.observe(s);});
 })();
 </script>
 
