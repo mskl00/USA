@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>On the Road USA 2026 — Far West Road Trip</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
   --ink:#0f1923;--sand:#f5efe6;--cream:#faf6f0;--rust:#c84b2f;--amber:#e8821a;
@@ -141,10 +141,136 @@ footer{background:var(--ink);color:rgba(255,255,255,.45);text-align:center;paddi
   .scene-row > div{height:160px}
 }
 @keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
-.day-section{animation:fadeUp .45s ease both}
+/* animation handled by IntersectionObserver */
+
+/* ============================================================
+   ENHANCED STYLES — images, UX, animations
+   ============================================================ */
+
+/* Foto reali: zoom on hover */
+.scene-banner img, .scene-row > div img {
+  width:100%; height:100%; object-fit:cover; display:block;
+  transition: transform 0.5s cubic-bezier(0.25,0.46,0.45,0.94);
+}
+.scene-banner:hover img, .scene-row > div:hover img {
+  transform: scale(1.04);
+}
+.scene-banner, .scene-row > div { overflow:hidden; }
+
+/* Reading progress bar */
+#prog-bar {
+  position:fixed; top:0; left:0; height:3px; width:0%;
+  background:linear-gradient(90deg, var(--amber), var(--rust));
+  z-index:9999; transition:width .08s linear;
+  box-shadow: 0 0 8px var(--amber);
+}
+
+/* Back-to-top button */
+#back-top {
+  position:fixed; bottom:1.8rem; right:1.8rem;
+  width:46px; height:46px; border-radius:50%;
+  background:var(--dusk); color:white;
+  border:none; font-size:1.2rem; cursor:pointer;
+  opacity:0; transform:translateY(20px);
+  transition:all .3s ease; z-index:500;
+  box-shadow:0 4px 18px rgba(0,0,0,.35);
+  display:flex; align-items:center; justify-content:center;
+}
+#back-top.show { opacity:1; transform:translateY(0); }
+#back-top:hover { background:var(--amber); transform:translateY(-4px) !important; }
+
+/* Better nav active link */
+.nav-link.active { background:var(--amber) !important; color:#fff !important; }
+
+/* Day-hdr improved */
+.day-hdr { position:relative; }
+
+/* Hero with real photo */
+.hero { position:relative; }
+
+/* Image caption overlay on scene-banners */
+.scene-banner { position:relative; }
+.scene-banner figcaption {
+  position:absolute; bottom:0; left:0; right:0;
+  background:linear-gradient(transparent, rgba(0,0,0,.55));
+  color:white; font-size:.72rem; padding:.4rem .8rem .5rem;
+  letter-spacing:.06em; pointer-events:none;
+  opacity:0; transition:opacity .3s;
+}
+.scene-banner:hover figcaption { opacity:1; }
+
+/* Better info-card hover */
+.info-card {
+  transition: box-shadow .2s, transform .2s;
+}
+.info-card:hover {
+  box-shadow:0 6px 24px rgba(0,0,0,.12);
+  transform:translateY(-2px);
+}
+
+/* Improved activ card hover */
+.activ { transition: box-shadow .2s, transform .2s; }
+.activ:hover { box-shadow:0 6px 22px rgba(0,0,0,.14); transform:translateY(-1px); }
+.activ:hover .activ-meta { background:var(--dusk); }
+.activ:hover .activ-name { color:white; }
+.activ:hover .activ-time { color:var(--gold); }
+.activ:hover .activ-loc  { color:rgba(255,255,255,.65); }
+.activ:hover .park-tag   { background:rgba(255,255,255,.1); color:var(--gold); border-color:var(--gold); }
+
+/* Day-section fade-in via JS (override static animation) */
+.day-section { opacity:0; transform:translateY(24px);
+  transition:opacity .5s ease, transform .5s ease; }
+.day-section.visible { opacity:1; transform:translateY(0); }
+
+/* Hero stats stagger */
+.hero-stats > div { 
+  animation: fadeUp .6s ease both; 
+}
+.hero-stats > div:nth-child(1){animation-delay:.15s}
+.hero-stats > div:nth-child(2){animation-delay:.28s}
+.hero-stats > div:nth-child(3){animation-delay:.41s}
+.hero-stats > div:nth-child(4){animation-delay:.54s}
+
+/* Better hotel-box */
+.hotel-box { transition:box-shadow .2s; }
+.hotel-box:hover { box-shadow:0 4px 16px rgba(106,27,154,.2); }
+
+/* Nav improvements */
+nav { backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); }
+
+/* Better table header gradient */
+.itable th { background:linear-gradient(135deg, var(--dusk), #2e5fa3); }
+
+/* Section entry separator */
+.sec-header { margin-top:.5rem; }
+
+/* Scrollbar thin */
+::-webkit-scrollbar { width:6px; }
+::-webkit-scrollbar-track { background:var(--sand); }
+::-webkit-scrollbar-thumb { background:var(--dusk); border-radius:3px; }
+
+/* Mobile polish */
+@media(max-width:640px){
+  #back-top { bottom:1rem; right:1rem; width:40px; height:40px; font-size:1rem; }
+  .scene-banner { height:160px !important; }
+  .scene-banner.tall { height:200px !important; }
+}
+
+/* Image loading shimmer */
+img[loading="lazy"] {
+  background:linear-gradient(90deg, #e0e6ed 25%, #f5efe6 50%, #e0e6ed 75%);
+  background-size:200% 100%;
+}
+
 </style>
 </head>
 <body>
+
+<!-- Progress bar -->
+<div id="prog-bar"></div>
+<!-- Back to top -->
+<button id="back-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Torna su">↑</button>
+
 
 <nav>
   <span class="nav-brand">🇺🇸 USA 2026</span>
@@ -172,28 +298,8 @@ footer{background:var(--ink);color:rgba(255,255,255,.45);text-align:center;paddi
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-svg"><svg viewBox="0 0 800 280" xmlns="http://www.w3.org/2000/svg">
-<defs><linearGradient id="mvsky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#FF6B35"/><stop offset="40%" stop-color="#FF9A4A"/><stop offset="100%" stop-color="#FFD580"/></linearGradient>
-<linearGradient id="mvrock" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#c04010"/><stop offset="100%" stop-color="#d06030"/></linearGradient>
-<linearGradient id="mvfloor" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#c8a870"/><stop offset="100%" stop-color="#a08050"/></linearGradient></defs>
-<rect width="800" height="280" fill="url(#mvsky)"/>
-<circle cx="680" cy="65" r="45" fill="#FF8C00" opacity="0.85"/>
-<rect x="55" y="200" width="800" height="80" fill="url(#mvfloor)"/>
-<path d="M0 210 Q100 200 200 205 Q300 210 400 202 Q500 194 600 200 Q700 206 800 198 L800 280 L0 280Z" fill="url(#mvfloor)"/>
-<g fill="url(#mvrock)">
-<path d="M100 210 L100 100 Q110 70 130 55 Q150 40 160 55 Q170 65 175 85 L185 210Z"/>
-<path d="M80 210 L88 90 Q100 60 120 48 Q135 38 148 50 Q155 58 158 75 L165 210Z" opacity="0.8"/>
-<path d="M270 210 L270 80 Q282 45 305 30 Q330 15 345 30 Q360 45 368 70 L385 210Z"/>
-<path d="M256 210 L265 72 Q278 40 302 26 Q328 12 345 27" opacity="0.7"/>
-<path d="M500 210 L500 120 Q510 95 525 85 Q540 75 552 85 Q564 95 570 120 L585 210Z"/>
-<path x="490" y="105" width="100" height="105"/>
-<path d="M650 210 L652 170 Q660 155 670 150 Q680 145 690 150 Q700 155 706 170 L710 210Z"/>
-</g>
-<path d="M0 240 Q400 228 800 238 L800 280 L0 280Z" fill="#8a7040" opacity="0.6"/>
-<text x="400" y="258" font-family="Georgia,serif" font-size="21" font-weight="bold" fill="white" text-anchor="middle">Monument Valley</text>
-<text x="400" y="275" font-family="Arial,sans-serif" font-size="11" fill="white" opacity="0.65" text-anchor="middle">Navajo Nation · Arizona &amp; Utah</text>
-</svg></div>
-  <div class="hero-content">
+  <div class="hero-img-bg" style="position:absolute;inset:0;background-image:url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=1400&q=85');background-size:cover;background-position:center;z-index:0;"></div><div class="hero-img-overlay" style="position:absolute;inset:0;background:linear-gradient(160deg,rgba(15,25,35,0.82) 0%,rgba(27,58,107,0.72) 45%,rgba(200,75,47,0.62) 100%);z-index:1;"></div>
+  <div class="hero-content" style="position:relative;z-index:2;">
     <p class="hero-eyebrow">17 Agosto — 1 Settembre 2026</p>
     <h1 class="hero-title">On the Road<span>USA 2026</span></h1>
     <p class="hero-sub">Far West Ultimate Road Trip · 16 giorni · 5 stati · 8+ parchi nazionali · ~5.000 km</p>
@@ -494,22 +600,7 @@ Volo ore 20:00"
     <div class="day-num"><span class="label">DAY 2</span><span class="date">Lun 18 Agosto</span></div>
     <div class="day-info"><h3>Los Angeles — Hollywood, Beverly Hills & Spiagge</h3><p>~65 km in città · Ritiro auto ore 9:00 a ONT · ~72 km</p></div>
     </div>
-  <div class="scene-banner"><svg viewBox="0 0 800 280" xmlns="http://www.w3.org/2000/svg">
-<defs><linearGradient id="hsky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ff9a4a"/><stop offset="60%" stop-color="#ffd580"/><stop offset="100%" stop-color="#e8c97a"/></linearGradient>
-<linearGradient id="hhills" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#5a7a40"/><stop offset="100%" stop-color="#3d5c28"/></linearGradient></defs>
-<rect width="800" height="280" fill="url(#hsky)"/>
-<ellipse cx="400" cy="360" rx="450" ry="160" fill="url(#hhills)"/>
-<ellipse cx="120" cy="340" rx="200" ry="140" fill="#4a6835"/>
-<ellipse cx="680" cy="350" rx="180" ry="130" fill="#3d5c28"/>
-<text x="80" y="145" font-family="Arial Black,sans-serif" font-weight="900" font-size="58" fill="white" opacity="0.95" letter-spacing="4">HOLLYWOOD</text>
-<rect x="75" y="152" width="650" height="8" fill="white" opacity="0.3" rx="4"/>
-<circle cx="700" cy="60" r="38" fill="#FFD700" opacity="0.9"/>
-<line x1="700" y1="5" x2="700" y2="20" stroke="#FFD700" stroke-width="3" opacity="0.7"/>
-<line x1="700" y1="100" x2="700" y2="115" stroke="#FFD700" stroke-width="3" opacity="0.7"/>
-<line x1="645" y1="60" x2="660" y2="60" stroke="#FFD700" stroke-width="3" opacity="0.7"/>
-<line x1="740" y1="60" x2="755" y2="60" stroke="#FFD700" stroke-width="3" opacity="0.7"/>
-<text x="400" y="230" font-family="Arial,sans-serif" font-size="14" fill="white" opacity="0.7" text-anchor="middle">Los Angeles · California</text>
-</svg></div>
+  <div class="scene-banner"><img src="https://images.unsplash.com/photo-1580655653885-65763b2597d0?auto=format&fit=crop&w=1400&q=85" alt="Hollywood" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy"></div>
   <div class="transport">
     <div class="transport-hdr">🚗 COME MUOVERSI — LOS ANGELES</div>
     <div class="transport-col"><h4>🚗 Auto</h4>Necessaria da ONT a Hollywood (72 km, I-10 W poi CA-110 N). Parcheggiare in garage a Hollywood ($15-20/giorno). Per Beverly Hills: parcheggio gratuito su Canon Dr o Rodeo Dr (2h limit). Per Venice/Santa Monica: lotto Lot 8 Santa Monica (~$12 giornaliero).</div>
@@ -611,22 +702,7 @@ Volo ore 20:00"
     <div class="day-num"><span class="label">DAY 3</span><span class="date">Mar 19 Agosto</span></div>
     <div class="day-info"><h3>Pacific Coast Highway — Malibu → Big Sur → Carmel</h3><p>~480 km · Partenza ore 7:30 · Dormire Santa Clara</p></div>
     </div>
-  <div class="scene-banner tall"><svg viewBox="0 0 800 280" xmlns="http://www.w3.org/2000/svg">
-<defs><linearGradient id="psky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1a3a5c"/><stop offset="50%" stop-color="#2e6fa3"/><stop offset="100%" stop-color="#4a9fd4"/></linearGradient>
-<linearGradient id="psea" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1e6a9e"/><stop offset="100%" stop-color="#0d4a7a"/></linearGradient></defs>
-<rect width="800" height="280" fill="url(#psky)"/>
-<rect x="0" y="160" width="800" height="120" fill="url(#psea)"/>
-<path d="M0 165 Q200 145 400 170 Q600 190 800 160 L800 280 L0 280Z" fill="url(#psea)" opacity="0.8"/>
-<path d="M0 200 Q100 185 250 195 Q400 205 550 185 Q650 175 800 195" fill="none" stroke="white" stroke-width="1.5" opacity="0.4"/>
-<path d="M0 215 Q150 200 300 210 Q450 220 600 205 Q700 198 800 210" fill="none" stroke="white" stroke-width="1" opacity="0.3"/>
-<path d="M600 280 Q650 200 680 160 Q700 130 730 120 L750 160 Q720 170 710 200 Q700 230 700 280Z" fill="#4a7c30"/>
-<path d="M530 280 Q580 210 600 175 Q615 150 630 140 L645 168 Q628 185 620 210 Q610 240 615 280Z" fill="#3d6828"/>
-<path d="M0 250 L0 280 L150 280 L150 250 L120 200 L80 180 L50 210Z" fill="#5a6e3a"/>
-<path d="M80 280 L200 280 L200 240 L180 200 L160 195 L140 230 L100 260Z" fill="#4a5c30"/>
-<path d="M30 170 Q200 190 400 175 Q600 160 770 175 Q780 176 800 178 L800 220 Q600 200 400 215 Q200 230 0 210Z" fill="#8B7355" opacity="0.7"/>
-<text x="400" y="130" font-family="Georgia,serif" font-size="22" font-weight="bold" fill="white" opacity="0.9" text-anchor="middle">Pacific Coast Highway</text>
-<text x="400" y="152" font-family="Arial,sans-serif" font-size="13" fill="white" opacity="0.6" text-anchor="middle">Big Sur · California</text>
-</svg></div>
+  <div class="scene-banner tall"><img src="https://images.unsplash.com/photo-1561328399-f94d2de78605?auto=format&fit=crop&w=1400&q=85" alt="Pch" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy"></div>
   <div class="alert blue"><span class="alert-ic">🌊</span><div>La PCH (US-1) è la strada panoramica più bella del mondo. NON seguire la I-5 — restare sempre sulla US-1. Fare il pieno a Malibu prima di entrare in Big Sur (80 km senza stazioni).</div></div>
   <p class="stitle ">MATTINA — Malibu & Santa Barbara (7:30–12:00)</p>
   <div class="activ">
@@ -713,54 +789,7 @@ Volo ore 20:00"
     <div class="day-num"><span class="label">DAY 4</span><span class="date">Mer 20 Agosto</span></div>
     <div class="day-info"><h3>Silicon Valley (2h rapidi) → San Francisco</h3><p>Partenza da Santa Clara ore 9:00 · ~55 km → SF</p></div>
     </div>
-  <div class="scene-row two"><div><svg viewBox="0 0 800 280" xmlns="http://www.w3.org/2000/svg">
-<defs><linearGradient id="svsky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1a1a2e"/><stop offset="100%" stop-color="#16213e"/></linearGradient></defs>
-<rect width="800" height="280" fill="url(#svsky)"/>
-<circle cx="600" cy="90" r="75" fill="none" stroke="#61dafb" stroke-width="2" opacity="0.6"/>
-<circle cx="600" cy="90" r="55" fill="none" stroke="#61dafb" stroke-width="1.5" opacity="0.4"/>
-<circle cx="600" cy="90" r="35" fill="none" stroke="#61dafb" stroke-width="1" opacity="0.3"/>
-<circle cx="600" cy="90" r="8" fill="#61dafb" opacity="0.9"/>
-<line x1="525" y1="90" x2="670" y2="90" stroke="#61dafb" stroke-width="1" opacity="0.5"/>
-<line x1="600" y1="15" x2="600" y2="165" stroke="#61dafb" stroke-width="1" opacity="0.5"/>
-<rect x="40" y="40" width="180" height="90" rx="8" fill="#e8e8e8" opacity="0.95"/>
-<rect x="50" y="50" width="160" height="70" rx="4" fill="black" opacity="0.8"/>
-<rect x="52" y="52" width="155" height="65" rx="3" fill="#1a1a2e"/>
-<circle cx="82" cy="75" r="14" fill="none" stroke="#EA4335" stroke-width="3"/>
-<circle cx="82" cy="75" r="14" fill="none" stroke="#4285F4" stroke-width="3" stroke-dasharray="22 44" stroke-dashoffset="0"/>
-<circle cx="82" cy="75" r="7" fill="#34A853"/>
-<text x="102" y="72" font-family="Arial,sans-serif" font-size="10" font-weight="bold" fill="#4285F4">Google</text>
-<text x="102" y="84" font-family="Arial,sans-serif" font-size="8" fill="#aaa">Googleplex · Mountain View</text>
-<circle cx="130" cy="125" r="20" fill="none" stroke="#555" stroke-width="2"/>
-<path d="M120 125 L130 110 L140 125 L135 125 L135 140 L125 140 L125 125Z" fill="#888"/>
-<text x="400" y="220" font-family="Arial,sans-serif" font-size="14" fill="#61dafb" text-anchor="middle">Apple Park · Googleplex · Meta HQ</text>
-<text x="400" y="245" font-family="Georgia,serif" font-size="20" font-weight="bold" fill="white" text-anchor="middle">Silicon Valley, California</text>
-<circle cx="350" cy="100" r="4" fill="#FFD700" opacity="0.8"/>
-<circle cx="420" cy="140" r="3" fill="#61dafb" opacity="0.6"/>
-<circle cx="480" cy="80" r="5" fill="#FF6B6B" opacity="0.7"/>
-<circle cx="270" cy="120" r="3" fill="white" opacity="0.5"/>
-<circle cx="310" cy="80" r="4" fill="#61dafb" opacity="0.5"/>
-</svg></div><div><svg viewBox="0 0 800 280" xmlns="http://www.w3.org/2000/svg">
-<defs><linearGradient id="sfsky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#c0d8f0"/><stop offset="100%" stop-color="#e8f4fd"/></linearGradient></defs>
-<rect width="800" height="280" fill="url(#sfsky)"/>
-<rect x="0" y="200" width="800" height="80" fill="#1a4a7a" opacity="0.5"/>
-<rect x="50" y="185" width="38" height="15" rx="3" fill="#c0392b"/>
-<rect x="712" y="185" width="38" height="15" rx="3" fill="#c0392b"/>
-<rect x="55" y="60" width="28" height="125" rx="4" fill="#c0392b"/>
-<rect x="717" y="60" width="28" height="125" rx="4" fill="#c0392b"/>
-<line x1="69" y1="60" x2="731" y2="60" stroke="#c0392b" stroke-width="6"/>
-<line x1="69" y1="85" x2="731" y2="85" stroke="#c0392b" stroke-width="3"/>
-<line x1="69" y1="115" x2="731" y2="115" stroke="#c0392b" stroke-width="3"/>
-<line x1="69" y1="145" x2="731" y2="145" stroke="#c0392b" stroke-width="3"/>
-<line x1="69" y1="170" x2="731" y2="170" stroke="#c0392b" stroke-width="3"/>
-<g opacity="0.3" fill="none" stroke="#c0392b" stroke-width="1">
-<line x1="150" y1="60" x2="150" y2="185"/><line x1="250" y1="60" x2="250" y2="185"/>
-<line x1="350" y1="60" x2="350" y2="185"/><line x1="450" y1="60" x2="450" y2="185"/>
-<line x1="550" y1="60" x2="550" y2="185"/><line x1="650" y1="60" x2="650" y2="185"/>
-</g>
-<rect x="0" y="195" width="800" height="5" fill="#999" opacity="0.5"/>
-<text x="400" y="240" font-family="Georgia,serif" font-size="22" font-weight="bold" fill="white" text-anchor="middle">Golden Gate Bridge</text>
-<text x="400" y="262" font-family="Arial,sans-serif" font-size="13" fill="white" opacity="0.7" text-anchor="middle">San Francisco · California</text>
-</svg></div></div>
+  <div class="scene-row two"><div><img src="https://images.unsplash.com/photo-1573804633927-bfcbcd909acd?auto=format&fit=crop&w=1400&q=85" alt="Sv" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy"></div><div><img src="https://images.unsplash.com/photo-1501594907352-04cda38ebc29?auto=format&fit=crop&w=1400&q=85" alt="Gg" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy"></div></div>
   <div class="alert blue"><span class="alert-ic">💡</span><div><strong>Silicon Valley in 2 ore:</strong> giro rapido solo esterno, 20 min per campus, foto veloci e ripartire. Da Santa Clara a Menlo Park sono ~30 km totali.</div></div>
   <p class="stitle blue">MATTINA — Giro Rapido Silicon Valley (9:00–11:00)</p>
   <div class="activ">
@@ -843,25 +872,7 @@ Volo ore 20:00"
     <div class="day-num"><span class="label">DAY 5</span><span class="date">Gio 21 Agosto</span></div>
     <div class="day-info"><h3>San Francisco: Alcatraz + Giro Città → Sonora</h3><p>Alcatraz 9:40 · SF fino 16:00 · Partenza Sonora · ~220 km</p></div>
     </div>
-  <div class="scene-banner"><svg viewBox="0 0 800 280" xmlns="http://www.w3.org/2000/svg">
-<defs><linearGradient id="asky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#4a6fa5"/><stop offset="100%" stop-color="#8fb8d4"/></linearGradient>
-<linearGradient id="asea" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1a5276"/><stop offset="100%" stop-color="#0d3a5c"/></linearGradient></defs>
-<rect width="800" height="280" fill="url(#asky)"/>
-<rect x="0" y="180" width="800" height="100" fill="url(#asea)"/>
-<path d="M0 185 Q100 175 200 182 Q300 189 400 180 Q500 171 600 178 Q700 185 800 178 L800 280 L0 280Z" fill="url(#asea)"/>
-<path d="M200 185 L220 150 L240 145 L260 150 L280 185Z" fill="#5d6d7e"/>
-<rect x="215" y="100" width="10" height="50" fill="#7f8c8d"/>
-<rect x="215" y="95" width="10" height="8" fill="#e74c3c"/>
-<rect x="220" y="140" width="45" height="30" fill="#5d6d7e"/>
-<rect x="225" y="115" width="35" height="30" fill="#6b7880"/>
-<rect x="228" y="120" width="8" height="10" rx="1" fill="black" opacity="0.7"/>
-<rect x="242" y="120" width="8" height="10" rx="1" fill="black" opacity="0.7"/>
-<rect x="228" y="135" width="8" height="10" rx="1" fill="#ffd700" opacity="0.3"/>
-<rect x="270" y="135" width="20" height="35" fill="#5d6d7e"/>
-<path d="M220 145 Q300 130 380 140 Q460 150 500 145" fill="none" stroke="#b0b8c0" stroke-width="0.5" opacity="0.4"/>
-<text x="400" y="235" font-family="Georgia,serif" font-size="22" font-weight="bold" fill="white" text-anchor="middle">Alcatraz Island</text>
-<text x="400" y="258" font-family="Arial,sans-serif" font-size="13" fill="white" opacity="0.65" text-anchor="middle">San Francisco Bay · The Rock</text>
-</svg></div>
+  <div class="scene-banner"><img src="https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&w=1400&q=85" alt="Alcatraz" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy"></div>
   <div class="alert red"><span class="alert-ic">🔴</span><div><strong>Alcatraz:</strong> alcatrazcruises.com — 2-3 settimane prima. Tour 9:40, ~$45/pp. Pier 33 alle 9:10 (30 min prima). Pier 33: 15 min in Muni dall'hotel o Uber ~$12.</div></div>
   <p class="stitle ">MATTINA — Alcatraz (8:30–13:30)</p>
   <div class="activ">
@@ -938,24 +949,7 @@ Volo ore 20:00"
     <div class="day-num"><span class="label">DAY 6</span><span class="date">Ven 22 Agosto</span></div>
     <div class="day-info"><h3>Yosemite National Park</h3><p>~70 km da Sonora · Partenza ore 6:30 — arrivare presto!</p></div>
     </div>
-  <div class="scene-banner tall"><svg viewBox="0 0 800 280" xmlns="http://www.w3.org/2000/svg">
-<defs>
-<linearGradient id="ysky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#87CEEB"/><stop offset="100%" stop-color="#b8d4e8"/></linearGradient>
-<linearGradient id="ycap" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#a09080"/><stop offset="100%" stop-color="#c8b8a8"/></linearGradient>
-<linearGradient id="yfloor" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#5a8a40"/><stop offset="100%" stop-color="#3d6828"/></linearGradient></defs>
-<rect width="800" height="280" fill="url(#ysky)"/>
-<path d="M0 280 L0 160 Q100 100 200 90 L280 200 Z" fill="url(#ycap)"/>
-<path d="M280 200 L200 90 Q300 60 340 55 L380 190Z" fill="#b0a090"/>
-<path d="M520 280 L520 140 Q560 80 580 60 Q600 40 620 30 Q640 40 660 60 Q680 80 720 140 L720 280Z" fill="url(#ycap)"/>
-<path d="M620 30 Q630 20 640 15 Q650 20 660 30 Q650 28 640 26 Q630 28 620 30Z" fill="white" opacity="0.7"/>
-<path d="M0 240 Q200 210 400 230 Q600 250 800 235 L800 280 L0 280Z" fill="url(#yfloor)"/>
-<rect x="0" y="265" width="800" height="15" fill="#4a7830" opacity="0.6"/>
-<path d="M355 190 Q360 180 365 130 Q367 120 370 110 L375 110 Q378 120 380 130 Q385 180 390 190" fill="none" stroke="white" stroke-width="2.5" opacity="0.85"/>
-<path d="M363 145 Q370 138 376 135 Q372 140 370 148Z" fill="white" opacity="0.6"/>
-<text x="180" y="115" font-family="Arial Black,sans-serif" font-size="13" fill="#8a7060" opacity="0.9" text-anchor="middle">El Capitan</text>
-<text x="620" y="50" font-family="Arial Black,sans-serif" font-size="11" fill="#8a7060" opacity="0.9" text-anchor="middle">Half Dome</text>
-<text x="400" y="258" font-family="Georgia,serif" font-size="20" font-weight="bold" fill="white" text-anchor="middle">Yosemite National Park</text>
-</svg></div>
+  <div class="scene-banner tall"><img src="https://images.unsplash.com/photo-1562310503-a918c4c61e38?auto=format&fit=crop&w=1400&q=85" alt="Yosemite" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy"></div>
   <div class="alert red"><span class="alert-ic">⚠️</span><div>Verificare su recreation.gov il <strong>Timed Entry Permit</strong> (obbligatorio maggio-settembre, ~$2). America the Beautiful Pass vale come ingresso. Ingresso: <strong>Big Oak Flat Entrance</strong> su CA-120 (~70 km da Sonora, ~1h).</div></div>
   <div class="navette"><div class="navette-hdr">🚌 SISTEMA NAVETTE YOSEMITE — Leggere prima di arrivare</div><div class="navette-row"><span class="nav-ic">🅿️</span><div><strong>Dove parcheggiare:</strong> Valley Visitor Center Lot (il più grande, gratuito). Si riempie ENTRO le 9:00. Con partenza alle 6:30 da Sonora si arriva alle 7:30 — trovare posto garantito. Alternativa: Day Hiker Lot vicino a Curry Village.</div></div><div class="navette-row"><span class="nav-ic">🔵</span><div><strong>Valley Shuttle (linea blu):</strong> 14 fermate circolari. Ogni 10-20 min, 7:00–22:00. <strong>GRATUITA.</strong> Parcheggiare al Visitor Center (fermata 5) e usarla per tutto.</div></div><div class="navette-row"><span class="nav-ic">🟡</span><div><strong>Glacier Point Shuttle:</strong> ~$10/pp A/R. Da Bridalveil Creek al Glacier Point. Solo se strada aperta (aprile-novembre).</div></div><div class="navette-row"><span class="nav-ic">💡</span><div><strong>Strategia:</strong> Parcheggiare al Visitor Center alle 7:30 → navetta fino all'ultima fermata → tornare indietro scendendo. Così si inizia dai trail più lontani freschi.</div></div></div>
   <p class="stitle ">MATTINA — Yosemite Valley (7:30–13:00)</p>
@@ -1024,29 +1018,7 @@ Volo ore 20:00"
     <div class="day-num"><span class="label">DAY 7</span><span class="date">Sab 23 Agosto</span></div>
     <div class="day-info"><h3>Sequoia National Park → Ridgcrest</h3><p>~75 km da Fresno · Partenza ore 7:30 · ~240 km per Ridgcrest</p></div>
     </div>
-  <div class="scene-banner"><svg viewBox="0 0 800 280" xmlns="http://www.w3.org/2000/svg">
-<defs><linearGradient id="seqsky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1a4a2a"/><stop offset="100%" stop-color="#2d7a40"/></linearGradient></defs>
-<rect width="800" height="280" fill="#87CEEB"/>
-<rect x="0" y="180" width="800" height="100" fill="#3d6828"/>
-<g opacity="0.95">
-<rect x="360" y="20" width="80" height="260" rx="8" fill="#8B4513"/>
-<rect x="360" y="20" width="80" height="260" rx="8" fill="url(#seqsky)" opacity="0.3"/>
-<ellipse cx="400" cy="20" rx="45" ry="25" fill="#2d5a1e"/>
-<ellipse cx="400" cy="18" rx="38" ry="20" fill="#3a7028"/>
-</g>
-<rect x="140" y="60" width="50" height="220" rx="6" fill="#7a3b0d"/>
-<ellipse cx="165" cy="60" rx="30" ry="18" fill="#2d5a1e"/>
-<rect x="610" y="45" width="55" height="235" rx="6" fill="#7a3b0d"/>
-<ellipse cx="637" cy="45" rx="32" ry="20" fill="#2d5a1e"/>
-<rect x="50" y="100" width="35" height="180" rx="4" fill="#6b3309"/>
-<ellipse cx="67" cy="100" rx="22" ry="14" fill="#2d5a1e"/>
-<rect x="700" y="90" width="38" height="190" rx="4" fill="#6b3309"/>
-<ellipse cx="719" cy="90" rx="24" ry="15" fill="#2d5a1e"/>
-<rect x="250" y="75" width="42" height="205" rx="5" fill="#6b3309"/>
-<rect x="500" y="65" width="45" height="215" rx="5" fill="#7a3b0d"/>
-<text x="400" y="255" font-family="Georgia,serif" font-size="19" font-weight="bold" fill="white" text-anchor="middle" opacity="0.95">Sequoia National Park</text>
-<text x="400" y="272" font-family="Arial,sans-serif" font-size="11" fill="white" opacity="0.65" text-anchor="middle">General Sherman — L'Albero più Grande del Mondo</text>
-</svg></div>
+  <div class="scene-banner"><img src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?auto=format&fit=crop&w=1400&q=85" alt="Sequoia" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy"></div>
   <div class="alert orange"><span class="alert-ic">⚠️</span><div>Ingresso: <strong>Big Stump Entrance</strong> su CA-180 (~75 km da Fresno, ~1h). Le strade interne (Generals Highway) sono strette e tortuose — guidare lento con l'SUV. America the Beautiful Pass vale come ingresso.</div></div>
   <div class="activ">
       <div class="activ-meta">
@@ -1104,57 +1076,7 @@ Volo ore 20:00"
     <div class="day-num"><span class="label">DAY 8</span><span class="date">Dom 24 Agosto</span></div>
     <div class="day-info"><h3>Death Valley (Mattina) + Las Vegas (Sera)</h3><p>Partenza ore 6:00! · ~135 km DV · ~175 km LV</p></div>
     </div>
-  <div class="scene-row two"><div><svg viewBox="0 0 800 280" xmlns="http://www.w3.org/2000/svg">
-<defs>
-<linearGradient id="dvsky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#FF6B35"/><stop offset="40%" stop-color="#FFB347"/><stop offset="100%" stop-color="#FFD700"/></linearGradient>
-<linearGradient id="dvsand" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#C4A35A"/><stop offset="100%" stop-color="#8B7355"/></linearGradient></defs>
-<rect width="800" height="280" fill="url(#dvsky)"/>
-<circle cx="400" cy="60" r="55" fill="#FF4500" opacity="0.85"/>
-<circle cx="400" cy="60" r="55" fill="#FFD700" opacity="0.4"/>
-<circle cx="400" cy="60" r="35" fill="#FF6600" opacity="0.9"/>
-<path d="M0 200 Q100 180 200 185 Q300 190 400 178 Q500 166 600 172 Q700 178 800 165 L800 280 L0 280Z" fill="url(#dvsand)"/>
-<path d="M0 215 Q50 205 100 210 Q150 215 200 205 Q250 195 300 200 Q350 205 400 195 Q450 185 500 190 Q550 195 600 185 Q650 175 700 180 Q750 185 800 175" fill="none" stroke="#d4a050" stroke-width="1.5" opacity="0.6"/>
-<path d="M150 200 Q160 170 175 160 Q185 155 195 165 Q205 175 210 200Z" fill="#C4A35A" opacity="0.8"/>
-<path d="M580 195 Q592 165 605 153 Q615 148 627 158 Q639 168 644 195Z" fill="#C4A35A" opacity="0.8"/>
-<path d="M0 250 Q200 240 400 245 Q600 250 800 242 L800 280 L0 280Z" fill="#fff" opacity="0.35"/>
-<text x="400" y="245" font-family="Georgia,serif" font-size="20" font-weight="bold" fill="white" text-anchor="middle" opacity="0.95">Death Valley National Park</text>
-<text x="400" y="265" font-family="Arial,sans-serif" font-size="12" fill="white" opacity="0.7" text-anchor="middle">Il Posto più Caldo della Terra · -86m sul mare</text>
-</svg></div><div><svg viewBox="0 0 800 280" xmlns="http://www.w3.org/2000/svg">
-<rect width="800" height="280" fill="#080820"/>
-<rect x="0" y="0" width="800" height="280" fill="#0a0a1a"/>
-<g opacity="0.4">
-<circle cx="100" cy="50" r="1.5" fill="white"/><circle cx="250" cy="30" r="1" fill="white"/><circle cx="400" cy="20" r="2" fill="white"/><circle cx="600" cy="40" r="1.5" fill="white"/><circle cx="750" cy="25" r="1" fill="white"/><circle cx="50" cy="80" r="1" fill="white"/><circle cx="700" cy="70" r="1.5" fill="white"/>
-</g>
-<rect x="340" y="100" width="120" height="160" rx="4" fill="#1a1a40"/>
-<path d="M340 160 Q360 140 370 130 Q380 120 390 115 Q400 110 410 115 Q420 120 430 130 Q440 140 460 160Z" fill="#1a1a40"/>
-<rect x="355" y="120" width="90" height="140" rx="3" fill="#252550"/>
-<rect x="360" y="130" width="8" height="12" rx="1" fill="#FFD700" opacity="0.6"/>
-<rect x="375" y="130" width="8" height="12" rx="1" fill="#FFD700" opacity="0.6"/>
-<rect x="390" y="130" width="8" height="12" rx="1" fill="#FF6B35" opacity="0.6"/>
-<rect x="405" y="130" width="8" height="12" rx="1" fill="#FFD700" opacity="0.6"/>
-<rect x="420" y="130" width="8" height="12" rx="1" fill="#FFD700" opacity="0.6"/>
-<rect x="360" y="150" width="8" height="12" rx="1" fill="#ff4" opacity="0.7"/>
-<rect x="375" y="150" width="8" height="12" rx="1" fill="#ff4" opacity="0.7"/>
-<rect x="390" y="150" width="8" height="12" rx="1" fill="#ff4" opacity="0.7"/>
-<rect x="405" y="150" width="8" height="12" rx="1" fill="#ff4" opacity="0.4"/>
-<rect x="420" y="150" width="8" height="12" rx="1" fill="#ff4" opacity="0.7"/>
-<rect x="145" y="130" width="85" height="150" rx="3" fill="#1e1e3a"/>
-<path d="M145 170 L187 130 L229 170Z" fill="#1e1e3a"/>
-<rect x="158" y="145" width="58" height="135" rx="2" fill="#2a2a50"/>
-<rect x="162" y="150" width="6" height="9" rx="1" fill="#FFD700" opacity="0.5"/>
-<rect x="173" y="150" width="6" height="9" rx="1" fill="#FFD700" opacity="0.5"/>
-<rect x="184" y="150" width="6" height="9" rx="1" fill="#FF6B35" opacity="0.5"/>
-<rect x="195" y="150" width="6" height="9" rx="1" fill="#FFD700" opacity="0.5"/>
-<rect x="570" y="140" width="90" height="140" rx="3" fill="#1e1e3a"/>
-<rect x="575" y="110" width="6" height="32" fill="#FFD700" opacity="0.7"/>
-<rect x="598" y="105" width="6" height="37" fill="#FFD700" opacity="0.7"/>
-<rect x="621" y="110" width="6" height="32" fill="#FFD700" opacity="0.7"/>
-<rect x="644" y="108" width="6" height="34" fill="#FFD700" opacity="0.7"/>
-<path d="M0 240 Q200 230 400 238 Q600 246 800 235 L800 280 L0 280Z" fill="#111130"/>
-<line x1="0" y1="240" x2="800" y2="240" stroke="#FFD700" stroke-width="2" opacity="0.5"/>
-<text x="400" y="218" font-family="Georgia,serif" font-size="22" font-weight="bold" fill="#FFD700" text-anchor="middle">Las Vegas</text>
-<text x="400" y="238" font-family="Arial,sans-serif" font-size="12" fill="white" opacity="0.55" text-anchor="middle">The Strip · Nevada · Entertainment Capital of the World</text>
-</svg></div></div>
+  <div class="scene-row two"><div><img src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=1400&q=85" alt="Death" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy"></div><div><img src="https://images.unsplash.com/photo-1605833556294-ea5c7a74f57d?auto=format&fit=crop&w=1400&q=85" alt="Vegas" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy"></div></div>
   <div class="alert red"><span class="alert-ic">🌡️</span><div><strong>AGOSTO = IL POSTO PIÙ CALDO DELLA TERRA.</strong> 47–57°C nel fondovalle. Regole: (1) 4+ litri d'acqua a persona, (2) no trail 10:30–15:00, (3) AC sempre acceso, (4) scarpe chiuse obbligatorie, (5) guasto? restare in auto e chiamare i soccorsi al 911.</div></div>
   <p class="stitle ">ALBA — Death Valley (6:00–12:00)</p>
   <div class="activ">
@@ -1233,42 +1155,7 @@ Volo ore 20:00"
     <div class="day-num"><span class="label">DAY 9</span><span class="date">Lun 25 Agosto</span></div>
     <div class="day-info"><h3>Las Vegas — Valley of Fire + Strip in Dettaglio</h3><p>Mattina natura · Pomeriggio/sera sulla Strip</p></div>
     </div>
-  <div class="scene-banner"><svg viewBox="0 0 800 280" xmlns="http://www.w3.org/2000/svg">
-<rect width="800" height="280" fill="#080820"/>
-<rect x="0" y="0" width="800" height="280" fill="#0a0a1a"/>
-<g opacity="0.4">
-<circle cx="100" cy="50" r="1.5" fill="white"/><circle cx="250" cy="30" r="1" fill="white"/><circle cx="400" cy="20" r="2" fill="white"/><circle cx="600" cy="40" r="1.5" fill="white"/><circle cx="750" cy="25" r="1" fill="white"/><circle cx="50" cy="80" r="1" fill="white"/><circle cx="700" cy="70" r="1.5" fill="white"/>
-</g>
-<rect x="340" y="100" width="120" height="160" rx="4" fill="#1a1a40"/>
-<path d="M340 160 Q360 140 370 130 Q380 120 390 115 Q400 110 410 115 Q420 120 430 130 Q440 140 460 160Z" fill="#1a1a40"/>
-<rect x="355" y="120" width="90" height="140" rx="3" fill="#252550"/>
-<rect x="360" y="130" width="8" height="12" rx="1" fill="#FFD700" opacity="0.6"/>
-<rect x="375" y="130" width="8" height="12" rx="1" fill="#FFD700" opacity="0.6"/>
-<rect x="390" y="130" width="8" height="12" rx="1" fill="#FF6B35" opacity="0.6"/>
-<rect x="405" y="130" width="8" height="12" rx="1" fill="#FFD700" opacity="0.6"/>
-<rect x="420" y="130" width="8" height="12" rx="1" fill="#FFD700" opacity="0.6"/>
-<rect x="360" y="150" width="8" height="12" rx="1" fill="#ff4" opacity="0.7"/>
-<rect x="375" y="150" width="8" height="12" rx="1" fill="#ff4" opacity="0.7"/>
-<rect x="390" y="150" width="8" height="12" rx="1" fill="#ff4" opacity="0.7"/>
-<rect x="405" y="150" width="8" height="12" rx="1" fill="#ff4" opacity="0.4"/>
-<rect x="420" y="150" width="8" height="12" rx="1" fill="#ff4" opacity="0.7"/>
-<rect x="145" y="130" width="85" height="150" rx="3" fill="#1e1e3a"/>
-<path d="M145 170 L187 130 L229 170Z" fill="#1e1e3a"/>
-<rect x="158" y="145" width="58" height="135" rx="2" fill="#2a2a50"/>
-<rect x="162" y="150" width="6" height="9" rx="1" fill="#FFD700" opacity="0.5"/>
-<rect x="173" y="150" width="6" height="9" rx="1" fill="#FFD700" opacity="0.5"/>
-<rect x="184" y="150" width="6" height="9" rx="1" fill="#FF6B35" opacity="0.5"/>
-<rect x="195" y="150" width="6" height="9" rx="1" fill="#FFD700" opacity="0.5"/>
-<rect x="570" y="140" width="90" height="140" rx="3" fill="#1e1e3a"/>
-<rect x="575" y="110" width="6" height="32" fill="#FFD700" opacity="0.7"/>
-<rect x="598" y="105" width="6" height="37" fill="#FFD700" opacity="0.7"/>
-<rect x="621" y="110" width="6" height="32" fill="#FFD700" opacity="0.7"/>
-<rect x="644" y="108" width="6" height="34" fill="#FFD700" opacity="0.7"/>
-<path d="M0 240 Q200 230 400 238 Q600 246 800 235 L800 280 L0 280Z" fill="#111130"/>
-<line x1="0" y1="240" x2="800" y2="240" stroke="#FFD700" stroke-width="2" opacity="0.5"/>
-<text x="400" y="218" font-family="Georgia,serif" font-size="22" font-weight="bold" fill="#FFD700" text-anchor="middle">Las Vegas</text>
-<text x="400" y="238" font-family="Arial,sans-serif" font-size="12" fill="white" opacity="0.55" text-anchor="middle">The Strip · Nevada · Entertainment Capital of the World</text>
-</svg></div>
+  <div class="scene-banner"><img src="https://images.unsplash.com/photo-1605833556294-ea5c7a74f57d?auto=format&fit=crop&w=1400&q=85" alt="Vegas" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy"></div>
   <div class="activ">
       <div class="activ-meta">
         <span class="activ-name">Valley of Fire State Park</span>
@@ -1333,21 +1220,7 @@ Volo ore 20:00"
     <div class="day-num"><span class="label">DAY 10</span><span class="date">Mar 26 Agosto</span></div>
     <div class="day-info"><h3>Las Vegas → Zion National Park → Hatch</h3><p>~165 km LV→Zion · ~110 km Zion→Hatch · Partenza ore 7:00</p></div>
     </div>
-  <div class="scene-banner tall"><svg viewBox="0 0 800 280" xmlns="http://www.w3.org/2000/svg">
-<defs><linearGradient id="zsky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#5ba3c9"/><stop offset="100%" stop-color="#9dcfe8"/></linearGradient>
-<linearGradient id="zrock" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#c04a1f"/><stop offset="100%" stop-color="#e8763a"/></linearGradient></defs>
-<rect width="800" height="280" fill="url(#zsky)"/>
-<path d="M0 280 L0 120 Q80 60 160 50 Q200 45 220 80 L260 280Z" fill="url(#zrock)"/>
-<path d="M230 280 L220 80 Q240 40 280 30 Q320 20 350 60 L380 280Z" fill="#c84020"/>
-<path d="M540 280 L520 60 Q560 10 600 5 Q640 0 660 40 Q680 70 700 120 L720 280Z" fill="url(#zrock)"/>
-<path d="M700 280 L700 120 Q730 70 760 55 Q790 40 800 60 L800 280Z" fill="#b83818"/>
-<path d="M0 255 Q100 230 200 240 Q300 250 400 240 Q500 230 600 240 Q700 250 800 238 L800 280 L0 280Z" fill="#3a6e28" opacity="0.9"/>
-<path d="M0 268 Q200 255 400 262 Q600 269 800 258 L800 280 L0 280Z" fill="#4a8a35"/>
-<path d="M220 268 Q300 250 380 258 Q460 266 490 260 L490 280 L220 280Z" fill="#1a5276" opacity="0.6"/>
-<path d="M220 270 Q300 260 380 265 Q460 270 490 265" fill="none" stroke="#5dade2" stroke-width="2" opacity="0.7"/>
-<text x="400" y="235" font-family="Georgia,serif" font-size="21" font-weight="bold" fill="white" text-anchor="middle">Zion National Park</text>
-<text x="400" y="255" font-family="Arial,sans-serif" font-size="12" fill="white" opacity="0.65" text-anchor="middle">The Narrows · Utah</text>
-</svg></div>
+  <div class="scene-banner tall"><img src="https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?auto=format&fit=crop&w=1400&q=85" alt="Zion" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy"></div>
   <div class="navette"><div class="navette-hdr">🚌 SISTEMA NAVETTE ZION — Da marzo a novembre auto VIETATE sulla Zion Canyon Scenic Drive</div><div class="navette-row"><span class="nav-ic">🅿️</span><div><strong>Dove parcheggiare:</strong> Zion Canyon Visitor Center — parcheggio GRATUITO ma si riempie entro le 8:30 in agosto. Arrivare entro le 9:00. Alternativa: parcheggiare a Springdale (gratuito) e prendere la navetta viola fino al parco.</div></div><div class="navette-row"><span class="nav-ic">🟠</span><div><strong>Navetta arancione (Zion Canyon Shuttle):</strong> 9 fermate da Visitor Center a Temple of Sinawava. Ogni 7 min in alta stagione. <strong>GRATUITA.</strong></div></div><div class="navette-row"><span class="nav-ic">🟣</span><div><strong>Navetta viola (Springdale Shuttle):</strong> Springdale ↔ ingresso parco. Gratuita. Utile se si parcheggia a Springdale (gratuito su Zion Park Blvd).</div></div><div class="navette-row"><span class="nav-ic">💡</span><div><strong>Strategia:</strong> Parcheggiare alle 9:00 al Visitor Center → subito navetta fino all'ultima fermata (Temple of Sinawava) → tornare indietro scendendo alle fermate.</div></div></div>
   <div class="activ">
       <div class="activ-meta">
@@ -1404,51 +1277,7 @@ Volo ore 20:00"
     <div class="day-num"><span class="label">DAY 11</span><span class="date">Mer 27 Agosto</span></div>
     <div class="day-info"><h3>Bryce Canyon + Horseshoe Bend → Page</h3><p>~50 km Hatch→Bryce · ~220 km → Horseshoe · ~7 km → Page</p></div>
     </div>
-  <div class="scene-row two"><div><svg viewBox="0 0 800 280" xmlns="http://www.w3.org/2000/svg">
-<defs><linearGradient id="bsky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#4a90d9"/><stop offset="100%" stop-color="#87CEEB"/></linearGradient></defs>
-<rect width="800" height="280" fill="url(#bsky)"/>
-<g fill="#e07840">
-<rect x="60" y="120" width="22" height="160" rx="11"/><rect x="95" y="100" width="18" height="180" rx="9"/>
-<rect x="125" y="130" width="20" height="150" rx="10"/><rect x="155" y="105" width="16" height="175" rx="8"/>
-<rect x="180" y="140" width="22" height="140" rx="11"/><rect x="210" y="115" width="18" height="165" rx="9"/>
-<rect x="238" y="125" width="20" height="155" rx="10"/><rect x="265" y="95" width="24" height="185" rx="12"/>
-<rect x="295" y="135" width="16" height="145" rx="8"/><rect x="315" y="110" width="20" height="170" rx="10"/>
-<rect x="340" y="120" width="18" height="160" rx="9"/><rect x="365" y="100" width="22" height="180" rx="11"/>
-<rect x="393" y="130" width="16" height="150" rx="8"/><rect x="412" y="90" width="26" height="190" rx="13"/>
-<rect x="445" y="118" width="18" height="162" rx="9"/><rect x="470" y="108" width="20" height="172" rx="10"/>
-<rect x="497" y="135" width="16" height="145" rx="8"/><rect x="517" y="105" width="22" height="175" rx="11"/>
-<rect x="545" y="120" width="18" height="160" rx="9"/><rect x="570" y="95" width="24" height="185" rx="12"/>
-<rect x="600" y="130" width="16" height="150" rx="8"/><rect x="620" y="110" width="20" height="170" rx="10"/>
-<rect x="648" y="118" width="18" height="162" rx="9"/><rect x="673" y="100" width="22" height="180" rx="11"/>
-<rect x="700" y="125" width="20" height="155" rx="10"/><rect x="726" y="108" width="16" height="172" rx="8"/>
-<rect x="748" y="135" width="22" height="145" rx="11"/>
-</g>
-<g fill="#f09a60" opacity="0.6">
-<rect x="75" y="115" width="8" height="120" rx="4"/><rect x="145" y="108" width="7" height="132" rx="3"/>
-<rect x="285" y="100" width="8" height="145" rx="4"/><rect x="375" y="108" width="7" height="128" rx="3"/>
-<rect x="450" y="112" width="8" height="138" rx="4"/><rect x="540" y="105" width="7" height="140" rx="3"/>
-<rect x="630" y="108" width="8" height="132" rx="4"/><rect x="720" y="100" width="7" height="140" rx="3"/>
-</g>
-<rect x="0" y="240" width="800" height="40" fill="#2d5a1e"/>
-<text x="400" y="260" font-family="Georgia,serif" font-size="21" font-weight="bold" fill="white" text-anchor="middle">Bryce Canyon National Park</text>
-<text x="400" y="275" font-family="Arial,sans-serif" font-size="11" fill="white" opacity="0.65" text-anchor="middle">Hoodoos · Utah · 2.700 m</text>
-</svg></div><div><svg viewBox="0 0 800 280" xmlns="http://www.w3.org/2000/svg">
-<defs>
-<linearGradient id="anwall" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#c04010"/><stop offset="30%" stop-color="#e8763a"/><stop offset="60%" stop-color="#f0a050"/><stop offset="80%" stop-color="#d06030"/><stop offset="100%" stop-color="#a03010"/></linearGradient>
-<linearGradient id="anlight" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ffe8a0" stop-opacity="1"/><stop offset="100%" stop-color="#ff9040" stop-opacity="0"/></linearGradient></defs>
-<rect width="800" height="280" fill="#c04010"/>
-<path d="M0 0 Q100 30 150 60 Q200 90 180 140 Q160 190 140 280 L0 280Z" fill="#a03010"/>
-<path d="M800 0 Q700 30 650 60 Q600 90 620 140 Q640 190 660 280 L800 280Z" fill="#a03010"/>
-<path d="M0 0 Q200 20 300 60 Q400 100 380 180 Q360 260 340 280 L0 280Z" fill="url(#anwall)" opacity="0.5"/>
-<path d="M800 0 Q600 20 500 60 Q400 100 420 180 Q440 260 460 280 L800 280Z" fill="url(#anwall)" opacity="0.5"/>
-<ellipse cx="340" cy="0" rx="80" ry="40" fill="#ffe8a0" opacity="0.9"/>
-<path d="M300 0 Q320 30 340 80 Q360 130 370 180 Q375 220 380 280 L300 280 Q290 220 285 180 Q275 130 280 80 Q285 30 300 0Z" fill="url(#anlight)" opacity="0.7"/>
-<path d="M320 0 Q335 50 345 100 Q355 150 360 200 L345 200 Q340 150 330 100 Q320 50 320 0Z" fill="#ffe8a0" opacity="0.5"/>
-<path d="M50 60 Q120 80 180 120 Q240 160 250 220 Q260 250 260 280 L200 280 Q195 245 185 215 Q170 165 110 125 Q70 95 50 75Z" fill="#d06030" opacity="0.7"/>
-<path d="M750 50 Q680 75 620 115 Q560 155 550 215 Q545 248 545 280 L600 280 Q605 248 615 215 Q630 165 690 120 Q730 88 750 65Z" fill="#d06030" opacity="0.7"/>
-<text x="400" y="245" font-family="Georgia,serif" font-size="21" font-weight="bold" fill="white" text-anchor="middle" opacity="0.95">Antelope Canyon X</text>
-<text x="400" y="265" font-family="Arial,sans-serif" font-size="12" fill="white" opacity="0.65" text-anchor="middle">Slot Canyon · Page, Arizona · Navajo Nation</text>
-</svg></div></div>
+  <div class="scene-row two"><div><img src="https://images.unsplash.com/photo-1566044822034-d3c2d04e4e02?auto=format&fit=crop&w=1400&q=85" alt="Bryce" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy"></div><div><img src="https://images.unsplash.com/photo-1516483638261-f4dbaf036963?auto=format&fit=crop&w=1400&q=85" alt="Antelope" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy"></div></div>
   <div class="alert orange"><span class="alert-ic">⛄</span><div>Bryce Canyon a 2.400–2.700 m: freddo al mattino (10°C). Portare giacca. <strong>Strategia:</strong> iniziare da Rainbow Point (il più a sud) e tornare verso nord — così non si torna indietro mai.</div></div>
   <div class="navette"><div class="navette-hdr">🚌 NAVETTE BRYCE CANYON — da maggio a ottobre</div><div class="navette-row"><span class="nav-ic">🅿️</span><div><strong>Dove parcheggiare:</strong> Bryce Canyon Visitor Center — GRATUITO, ampio. Poi usare la navetta per tutti i viewpoint. I parcheggi ai singoli viewpoint sono piccoli (10-20 posti).</div></div><div class="navette-row"><span class="nav-ic">🟢</span><div><strong>Shuttle Loop:</strong> Collega tutti i viewpoint principali da Ruby's Inn al Bryce Point. Gratuito. Ogni 12-15 min in alta stagione.</div></div><div class="navette-row"><span class="nav-ic">💡</span><div><strong>Strategia Rainbow Point:</strong> Guidare fino a Rainbow Point con l'auto (è permesso), poi prendere la navetta verso nord scendendo ai viewpoint — così si risparmia tempo.</div></div></div>
   <div class="activ">
@@ -1515,43 +1344,7 @@ Volo ore 20:00"
     <div class="day-num"><span class="label">DAY 12</span><span class="date">Gio 28 Agosto</span></div>
     <div class="day-info"><h3>Biidi The Arch + Antelope Canyon X + Monument Valley</h3><p>⭐ Antelope Canyon X 11:40 · Monument Valley 16:30</p></div>
     </div>
-  <div class="scene-row two"><div><svg viewBox="0 0 800 280" xmlns="http://www.w3.org/2000/svg">
-<defs>
-<linearGradient id="anwall" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#c04010"/><stop offset="30%" stop-color="#e8763a"/><stop offset="60%" stop-color="#f0a050"/><stop offset="80%" stop-color="#d06030"/><stop offset="100%" stop-color="#a03010"/></linearGradient>
-<linearGradient id="anlight" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#ffe8a0" stop-opacity="1"/><stop offset="100%" stop-color="#ff9040" stop-opacity="0"/></linearGradient></defs>
-<rect width="800" height="280" fill="#c04010"/>
-<path d="M0 0 Q100 30 150 60 Q200 90 180 140 Q160 190 140 280 L0 280Z" fill="#a03010"/>
-<path d="M800 0 Q700 30 650 60 Q600 90 620 140 Q640 190 660 280 L800 280Z" fill="#a03010"/>
-<path d="M0 0 Q200 20 300 60 Q400 100 380 180 Q360 260 340 280 L0 280Z" fill="url(#anwall)" opacity="0.5"/>
-<path d="M800 0 Q600 20 500 60 Q400 100 420 180 Q440 260 460 280 L800 280Z" fill="url(#anwall)" opacity="0.5"/>
-<ellipse cx="340" cy="0" rx="80" ry="40" fill="#ffe8a0" opacity="0.9"/>
-<path d="M300 0 Q320 30 340 80 Q360 130 370 180 Q375 220 380 280 L300 280 Q290 220 285 180 Q275 130 280 80 Q285 30 300 0Z" fill="url(#anlight)" opacity="0.7"/>
-<path d="M320 0 Q335 50 345 100 Q355 150 360 200 L345 200 Q340 150 330 100 Q320 50 320 0Z" fill="#ffe8a0" opacity="0.5"/>
-<path d="M50 60 Q120 80 180 120 Q240 160 250 220 Q260 250 260 280 L200 280 Q195 245 185 215 Q170 165 110 125 Q70 95 50 75Z" fill="#d06030" opacity="0.7"/>
-<path d="M750 50 Q680 75 620 115 Q560 155 550 215 Q545 248 545 280 L600 280 Q605 248 615 215 Q630 165 690 120 Q730 88 750 65Z" fill="#d06030" opacity="0.7"/>
-<text x="400" y="245" font-family="Georgia,serif" font-size="21" font-weight="bold" fill="white" text-anchor="middle" opacity="0.95">Antelope Canyon X</text>
-<text x="400" y="265" font-family="Arial,sans-serif" font-size="12" fill="white" opacity="0.65" text-anchor="middle">Slot Canyon · Page, Arizona · Navajo Nation</text>
-</svg></div><div><svg viewBox="0 0 800 280" xmlns="http://www.w3.org/2000/svg">
-<defs><linearGradient id="mvsky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#FF6B35"/><stop offset="40%" stop-color="#FF9A4A"/><stop offset="100%" stop-color="#FFD580"/></linearGradient>
-<linearGradient id="mvrock" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#c04010"/><stop offset="100%" stop-color="#d06030"/></linearGradient>
-<linearGradient id="mvfloor" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#c8a870"/><stop offset="100%" stop-color="#a08050"/></linearGradient></defs>
-<rect width="800" height="280" fill="url(#mvsky)"/>
-<circle cx="680" cy="65" r="45" fill="#FF8C00" opacity="0.85"/>
-<rect x="55" y="200" width="800" height="80" fill="url(#mvfloor)"/>
-<path d="M0 210 Q100 200 200 205 Q300 210 400 202 Q500 194 600 200 Q700 206 800 198 L800 280 L0 280Z" fill="url(#mvfloor)"/>
-<g fill="url(#mvrock)">
-<path d="M100 210 L100 100 Q110 70 130 55 Q150 40 160 55 Q170 65 175 85 L185 210Z"/>
-<path d="M80 210 L88 90 Q100 60 120 48 Q135 38 148 50 Q155 58 158 75 L165 210Z" opacity="0.8"/>
-<path d="M270 210 L270 80 Q282 45 305 30 Q330 15 345 30 Q360 45 368 70 L385 210Z"/>
-<path d="M256 210 L265 72 Q278 40 302 26 Q328 12 345 27" opacity="0.7"/>
-<path d="M500 210 L500 120 Q510 95 525 85 Q540 75 552 85 Q564 95 570 120 L585 210Z"/>
-<path x="490" y="105" width="100" height="105"/>
-<path d="M650 210 L652 170 Q660 155 670 150 Q680 145 690 150 Q700 155 706 170 L710 210Z"/>
-</g>
-<path d="M0 240 Q400 228 800 238 L800 280 L0 280Z" fill="#8a7040" opacity="0.6"/>
-<text x="400" y="258" font-family="Georgia,serif" font-size="21" font-weight="bold" fill="white" text-anchor="middle">Monument Valley</text>
-<text x="400" y="275" font-family="Arial,sans-serif" font-size="11" fill="white" opacity="0.65" text-anchor="middle">Navajo Nation · Arizona &amp; Utah</text>
-</svg></div></div>
+  <div class="scene-row two"><div><img src="https://images.unsplash.com/photo-1516483638261-f4dbaf036963?auto=format&fit=crop&w=1400&q=85" alt="Antelope" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy"></div><div><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=1400&q=85" alt="Monument" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy"></div></div>
   <div class="alert red"><span class="alert-ic">📌</span><div><strong>Orari fissi!</strong> Antelope Canyon X 11:40 (arrivare 20 min prima alle 11:20). Monument Valley 16:30. Page→Monument Valley: ~195 km / ~2h15 — partire entro le 13:15 senza sosta.</div></div>
   <p class="stitle ">MATTINA — Page (7:30–11:00)</p>
   <div class="activ">
@@ -1620,24 +1413,7 @@ Volo ore 20:00"
     <div class="day-num"><span class="label">DAY 13</span><span class="date">Ven 29 Agosto</span></div>
     <div class="day-info"><h3>Grand Canyon National Park — South Rim</h3><p>~105 km da Tuba City · Partenza ore 6:00 — alba al canyon!</p></div>
     </div>
-  <div class="scene-banner tall"><svg viewBox="0 0 800 280" xmlns="http://www.w3.org/2000/svg">
-<defs><linearGradient id="gcsky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#5b9bd5"/><stop offset="100%" stop-color="#87CEEB"/></linearGradient>
-<linearGradient id="gcdepth" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#b0522a"/><stop offset="40%" stop-color="#7a3a1e"/><stop offset="70%" stop-color="#4a2010"/><stop offset="100%" stop-color="#1a0808"/></linearGradient></defs>
-<rect width="800" height="280" fill="url(#gcsky)"/>
-<rect x="0" y="70" width="800" height="210" fill="#c0602a"/>
-<rect x="0" y="80" width="800" height="200" fill="#b05525"/>
-<path d="M0 75 Q100 65 200 72 Q300 79 400 68 Q500 57 600 65 Q700 73 800 62 L800 280 L0 280Z" fill="#b05525"/>
-<path d="M180 75 Q220 72 260 75 L280 280 L160 280Z" fill="url(#gcdepth)"/>
-<path d="M400 68 Q450 65 500 70 L520 280 L380 280Z" fill="url(#gcdepth)"/>
-<path d="M600 65 Q640 60 680 65 L700 280 L580 280Z" fill="url(#gcdepth)"/>
-<path d="M0 75 Q40 60 80 65 L100 280 L0 280Z" fill="url(#gcdepth)"/>
-<path d="M0 85 Q200 75 400 82 Q600 89 800 76 L800 100 Q600 113 400 106 Q200 99 0 109Z" fill="#a84e20" opacity="0.7"/>
-<path d="M0 110 Q200 100 400 107 Q600 114 800 101 L800 130 Q600 143 400 136 Q200 129 0 142Z" fill="#905018" opacity="0.6"/>
-<path d="M0 140 Q200 130 400 137 Q600 144 800 131 L800 160 Q600 173 400 166 Q200 159 0 172Z" fill="#784030" opacity="0.5"/>
-<path d="M200 280 Q400 240 600 250 Q700 255 800 245 L800 280Z" fill="#1a3a5c" opacity="0.4"/>
-<text x="400" y="255" font-family="Georgia,serif" font-size="21" font-weight="bold" fill="white" text-anchor="middle">Grand Canyon National Park</text>
-<text x="400" y="272" font-family="Arial,sans-serif" font-size="11" fill="white" opacity="0.65" text-anchor="middle">South Rim · Arizona · 2 Miliardi di anni di Storia</text>
-</svg></div>
+  <div class="scene-banner tall"><img src="https://images.unsplash.com/photo-1474044159687-1ee9f3a51722?auto=format&fit=crop&w=1400&q=85" alt="Canyon" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy"></div>
   <div class="navette"><div class="navette-hdr">🚌 SISTEMA NAVETTE GRAND CANYON — Come visitarlo nel modo migliore</div><div class="navette-row"><span class="nav-ic">🅿️</span><div><strong>Dove parcheggiare:</strong> Grand Canyon Visitor Center Plaza (gratuito, 24h, ampio). Da qui prendere TUTTE le navette. NON tentare i viewpoint in auto — posti esauriti alle 8:00 in agosto.</div></div><div class="navette-row"><span class="nav-ic">🟠</span><div><strong>Navetta arancione (Village Route):</strong> Visitor Center ↔ Grand Canyon Village. Ogni 10 min.</div></div><div class="navette-row"><span class="nav-ic">🔴</span><div><strong>Navetta rossa (Hermit Road):</strong> Village → Hermits Rest (8 km, 9 fermate). Auto VIETATE marzo-novembre. Ogni 10-15 min. Unico modo per vedere Hopi Point, Mohave Point, The Abyss.</div></div><div class="navette-row"><span class="nav-ic">🔵</span><div><strong>Navetta blu (Kaibab/Rim):</strong> Visitor Center → Yaki Point (South Kaibab Trailhead). Auto vietate su Yaki Point Rd.</div></div><div class="navette-row"><span class="nav-ic">🟡</span><div><strong>Desert View Drive:</strong> Auto ammesse da est verso ovest — usarla al mattino presto per Desert View Watchtower.</div></div></div>
   <p class="stitle ">MATTINA — Desert View Drive (7:00–12:00)</p>
   <div class="activ">
@@ -1715,27 +1491,7 @@ Volo ore 20:00"
     <div class="day-num"><span class="label">DAY 14</span><span class="date">Sab 30 Agosto</span></div>
     <div class="day-info"><h3>Route 66 Completa — Williams → Palm Desert</h3><p>~530 km · Partenza ore 8:00 · Giornata iconica!</p></div>
     </div>
-  <div class="scene-banner"><svg viewBox="0 0 800 280" xmlns="http://www.w3.org/2000/svg">
-<defs><linearGradient id="r66sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#FF8C00"/><stop offset="60%" stop-color="#FFB347"/><stop offset="100%" stop-color="#d4a840"/></linearGradient></defs>
-<rect width="800" height="280" fill="url(#r66sky)"/>
-<rect x="0" y="190" width="800" height="90" fill="#3a3530"/>
-<rect x="0" y="195" width="800" height="80" fill="#4a4540"/>
-<rect x="0" y="198" width="800" height="3" fill="#ffe060" opacity="0.9"/>
-<rect x="0" y="248" width="800" height="3" fill="#ffe060" opacity="0.9"/>
-<line x1="0" y1="225" x2="800" y2="225" stroke="#fff" stroke-width="2" stroke-dasharray="50 30" opacity="0.5"/>
-<circle cx="680" cy="65" r="42" fill="#FF4500" opacity="0.85"/>
-<circle cx="680" cy="65" r="28" fill="#FF6600" opacity="0.9"/>
-<path d="M590 195 Q650 150 680 120 Q710 150 770 195Z" fill="#8B5522" opacity="0.9"/>
-<path d="M50 195 Q90 155 110 135 Q130 155 155 195Z" fill="#8B5522" opacity="0.8"/>
-<path d="M180 195 Q205 165 220 150 Q235 165 255 195Z" fill="#9B6535" opacity="0.7"/>
-<rect x="320" y="50" width="80" height="80" rx="8" fill="#222" opacity="0.9"/>
-<rect x="332" y="60" width="56" height="56" rx="5" fill="#1a1a1a"/>
-<circle cx="360" cy="88" r="25" fill="none" stroke="#e8e8e8" stroke-width="4"/>
-<circle cx="360" cy="88" r="18" fill="none" stroke="#e8e8e8" stroke-width="3"/>
-<text x="360" y="93" font-family="Arial Black,sans-serif" font-size="14" font-weight="900" fill="#e8e8e8" text-anchor="middle">66</text>
-<text x="400" y="245" font-family="Georgia,serif" font-size="21" font-weight="bold" fill="white" text-anchor="middle">Historic Route 66</text>
-<text x="400" y="263" font-family="Arial,sans-serif" font-size="12" fill="white" opacity="0.65" text-anchor="middle">Seligman · Oatman · Kingman · Arizona to California</text>
-</svg></div>
+  <div class="scene-banner"><img src="https://images.unsplash.com/photo-1503435980610-a51f3ddfee50?auto=format&fit=crop&w=1400&q=85" alt="Route66" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy"></div>
   <div class="alert orange"><span class="alert-ic">🛣️</span><div>NON seguire la I-40 — usare sempre la US-66 storica anche se più lenta. Tappe in ordine: Grand Canyon Caverns → Seligman → Hackberry → Kingman → Cool Springs → Oatman → Needles → Mojave → Pioneertown.</div></div>
   <div class="activ">
       <div class="activ-meta">
@@ -1819,69 +1575,7 @@ Volo ore 20:00"
     <div class="day-num"><span class="label">DAY 15</span><span class="date">Dom 31 Agosto</span></div>
     <div class="day-info"><h3>Joshua Tree + San Diego</h3><p>Partenza Palm Desert 6:30 · JT 7:00–12:00 · SD pomeriggio</p></div>
     </div>
-  <div class="scene-row two"><div><svg viewBox="0 0 800 280" xmlns="http://www.w3.org/2000/svg">
-<defs><linearGradient id="jtsky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#FF6B35"/><stop offset="30%" stop-color="#FFB347"/><stop offset="70%" stop-color="#FFD580"/><stop offset="100%" stop-color="#e8c870"/></linearGradient>
-<linearGradient id="jtfloor" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#c8b870"/><stop offset="100%" stop-color="#a09050"/></linearGradient></defs>
-<rect width="800" height="280" fill="url(#jtsky)"/>
-<circle cx="700" cy="55" r="40" fill="#FF8C00" opacity="0.85"/>
-<rect x="0" y="195" width="800" height="85" fill="url(#jtfloor)"/>
-<path d="M0 200 Q200 192 400 198 Q600 204 800 194 L800 280 L0 280Z" fill="url(#jtfloor)"/>
-<g fill="#4a7030">
-<rect x="120" y="170" width="12" height="30" rx="3"/>
-<path d="M118 170 L114 145 L122 138 L126 148 L122 170Z"/>
-<path d="M128 170 L132 148 L138 142 L140 152 L130 170Z"/>
-<path d="M116 155 L108 150 L104 142 L116 145Z" opacity="0.8"/>
-<rect x="280" y="165" width="10" height="35" rx="3"/>
-<path d="M278 165 L274 142 L282 136 L286 145 L282 165Z"/>
-<path d="M288 165 L292 145 L297 140 L299 150 L290 165Z"/>
-<rect x="420" y="168" width="12" height="32" rx="3"/>
-<path d="M418 168 L414 144 L422 137 L426 147 L422 168Z"/>
-<path d="M430 168 L434 147 L440 141 L442 151 L432 168Z"/>
-<path d="M415 155 L406 149 L403 142 L415 144Z" opacity="0.8"/>
-<rect x="590" y="172" width="10" height="28" rx="3"/>
-<path d="M588 172 L584 150 L592 144 L596 153 L592 172Z"/>
-<path d="M598 172 L602 153 L607 148 L609 157 L600 172Z"/>
-<rect x="680" y="175" width="10" height="25" rx="3"/>
-<path d="M678 175 L674 155 L682 149 L686 158 L682 175Z"/>
-</g>
-<g fill="#7a9050" opacity="0.6">
-<rect x="50" y="185" width="8" height="15" rx="2"/>
-<path d="M48 185 L45 170 L52 164 L55 172 L52 185Z"/>
-<rect x="200" y="188" width="8" height="12" rx="2"/>
-<rect x="480" y="183" width="8" height="17" rx="2"/>
-</g>
-<text x="400" y="258" font-family="Georgia,serif" font-size="21" font-weight="bold" fill="white" text-anchor="middle">Joshua Tree National Park</text>
-<text x="400" y="274" font-family="Arial,sans-serif" font-size="11" fill="white" opacity="0.65" text-anchor="middle">California · Deserto di Mojave &amp; Sonora</text>
-</svg></div><div><svg viewBox="0 0 800 280" xmlns="http://www.w3.org/2000/svg">
-<defs><linearGradient id="sdsky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#FF6B35"/><stop offset="40%" stop-color="#FF9A4A"/><stop offset="70%" stop-color="#FFD580"/><stop offset="100%" stop-color="#87CEEB"/></linearGradient>
-<linearGradient id="sdocean" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1a6a9e"/><stop offset="100%" stop-color="#0d4a7a"/></linearGradient></defs>
-<rect width="800" height="280" fill="url(#sdsky)"/>
-<circle cx="100" cy="80" r="50" fill="#FF4500" opacity="0.8"/>
-<rect x="0" y="175" width="800" height="105" fill="url(#sdocean)"/>
-<path d="M0 178 Q200 168 400 175 Q600 182 800 172 L800 280 L0 280Z" fill="url(#sdocean)"/>
-<path d="M0 195 Q200 185 400 192 Q600 199 800 189" fill="none" stroke="white" stroke-width="1.5" opacity="0.3"/>
-<g fill="#c8b090">
-<rect x="40" y="155" width="120" height="25" rx="3"/>
-<path d="M40 155 Q60 130 80 120 Q100 110 120 120 Q140 130 160 155Z"/>
-<rect x="55" y="125" width="90" height="30" rx="2" fill="#d4bc9a"/>
-<rect x="65" y="110" width="70" height="20" rx="2" fill="#e8d0b0"/>
-<rect x="60" y="128" width="10" height="14" rx="1" fill="#8B4513"/>
-<rect x="80" y="128" width="10" height="14" rx="1" fill="#8B4513"/>
-<rect x="100" y="128" width="10" height="14" rx="1" fill="#8B4513"/>
-<rect x="120" y="128" width="10" height="14" rx="1" fill="#8B4513"/>
-<path d="M100" y="110" Q100 95 100 85" stroke="#8B4513" stroke-width="4" fill="none"/>
-</g>
-<rect x="490" y="140" width="200" height="40" rx="3" fill="#c84010" opacity="0.9"/>
-<path d="M490 140 Q530 100 590 85 Q650 70 690 95 L690 140Z" fill="#c84010" opacity="0.8"/>
-<rect x="510" y="148" width="15" height="30" rx="2" fill="#d45818"/>
-<rect x="540" y="145" width="15" height="33" rx="2" fill="#d45818"/>
-<rect x="570" y="148" width="15" height="30" rx="2" fill="#d45818"/>
-<rect x="600" y="145" width="15" height="33" rx="2" fill="#d45818"/>
-<rect x="630" y="148" width="15" height="30" rx="2" fill="#d45818"/>
-<rect x="660" y="145" width="15" height="33" rx="2" fill="#d45818"/>
-<text x="400" y="252" font-family="Georgia,serif" font-size="21" font-weight="bold" fill="white" text-anchor="middle">San Diego</text>
-<text x="400" y="270" font-family="Arial,sans-serif" font-size="12" fill="white" opacity="0.65" text-anchor="middle">Hotel del Coronado · Sunset Cliffs · California</text>
-</svg></div></div>
+  <div class="scene-row two"><div><img src="https://images.unsplash.com/photo-1580889059533-cb38bbf5b0e7?auto=format&fit=crop&w=1400&q=85" alt="Joshua" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy"></div><div><img src="https://images.unsplash.com/photo-1569950044822-2f727b52d9ed?auto=format&fit=crop&w=1400&q=85" alt="Sandiego" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy"></div></div>
   <div class="alert red"><span class="alert-ic">🌡️</span><div>Joshua Tree agosto: 42°C. Fare il parco SOLO 6:30–12:00. Portare 3+ litri d'acqua. Niente trail dopo le 11:00.</div></div>
   <div class="activ">
       <div class="activ-meta">
@@ -1973,43 +1667,7 @@ Volo ore 20:00"
     <div class="day-num"><span class="label">DAY 16</span><span class="date">Lun 1 Settembre</span></div>
     <div class="day-info"><h3>Los Angeles → Volo LAX → Roma FCO</h3><p>Volo LAX ore 20:00 · Arrivo Roma 2 Settembre ore 20:00</p></div>
     </div>
-  <div class="scene-banner"><svg viewBox="0 0 800 280" xmlns="http://www.w3.org/2000/svg">
-<defs><linearGradient id="lasky2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1a1a2e"/><stop offset="40%" stop-color="#2a2a50"/><stop offset="100%" stop-color="#0a0a1a"/></linearGradient></defs>
-<rect width="800" height="280" fill="url(#lasky2)"/>
-<g opacity="0.5">
-<circle cx="80" cy="30" r="1.5" fill="white"/><circle cx="200" cy="15" r="1" fill="white"/><circle cx="320" cy="25" r="2" fill="white"/><circle cx="500" cy="10" r="1.5" fill="white"/><circle cx="650" cy="20" r="1" fill="white"/><circle cx="740" cy="35" r="2" fill="white"/><circle cx="150" cy="50" r="1" fill="white"/>
-</g>
-<g fill="#FFD700" opacity="0.85">
-<rect x="30" y="100" width="25" height="160" rx="2"/>
-<rect x="65" y="80" width="20" height="180" rx="2"/>
-<rect x="95" y="120" width="22" height="140" rx="2"/>
-<rect x="125" y="70" width="28" height="190" rx="2"/>
-<rect x="163" y="110" width="18" height="150" rx="2"/>
-<rect x="210" y="65" width="30" height="195" rx="2"/>
-<rect x="255" y="100" width="22" height="160" rx="2"/>
-<rect x="290" y="130" width="18" height="130" rx="2"/>
-<rect x="380" y="85" width="24" height="175" rx="2"/>
-<rect x="415" y="60" width="32" height="200" rx="2"/>
-<rect x="460" y="95" width="20" height="165" rx="2"/>
-<rect x="495" y="115" width="18" height="145" rx="2"/>
-<rect x="560" y="75" width="26" height="185" rx="2"/>
-<rect x="600" y="100" width="22" height="160" rx="2"/>
-<rect x="640" y="80" width="28" height="180" rx="2"/>
-<rect x="680" y="110" width="18" height="150" rx="2"/>
-<rect x="710" y="60" width="30" height="200" rx="2"/>
-<rect x="752" y="90" width="22" height="170" rx="2"/>
-</g>
-<g fill="#FF6B35" opacity="0.5">
-<rect x="42" y="105" width="8" height="155" rx="1"/><rect x="82" y="88" width="7" height="172" rx="1"/>
-<rect x="140" y="78" width="9" height="182" rx="1"/><rect x="225" y="75" width="9" height="185" rx="1"/>
-<rect x="428" y="68" width="10" height="192" rx="1"/><rect x="577" y="83" width="9" height="177" rx="1"/>
-<rect x="655" y="87" width="9" height="173" rx="1"/><rect x="725" y="68" width="9" height="192" rx="1"/>
-</g>
-<rect x="0" y="255" width="800" height="25" fill="#111130"/>
-<line x1="0" y1="255" x2="800" y2="255" stroke="#FFD700" stroke-width="2" opacity="0.4"/>
-<text x="400" y="230" font-family="Georgia,serif" font-size="22" font-weight="bold" fill="#FFD700" text-anchor="middle">Universal Studios Hollywood</text>
-<text x="400" y="250" font-family="Arial,sans-serif" font-size="12" fill="white" opacity="0.55" text-anchor="middle">Los Angeles · California · Fine del Viaggio</text>
-</svg></div>
+  <div class="scene-banner"><img src="https://images.unsplash.com/photo-1580655653885-65763b2597d0?auto=format&fit=crop&w=1400&q=85" alt="Hollywood" style="width:100%;height:100%;object-fit:cover;display:block;" loading="lazy"></div>
   <div class="alert blue"><span class="alert-ic">⏰</span><div>Consegnare l'auto a LAX entro le 17:00 (3h prima del volo). La mattina è LIBERA!</div></div>
   <div class="activ">
       <div class="activ-meta">
@@ -2156,5 +1814,25 @@ Volo ore 20:00"
   sections.forEach(s => io.observe(s));
 })();
 </script>
+
+<script>
+(function(){
+  // Progress bar + back-to-top
+  const bar = document.getElementById('prog-bar');
+  const btn = document.getElementById('back-top');
+  window.addEventListener('scroll', function(){
+    const h = document.body.scrollHeight - window.innerHeight;
+    bar.style.width = (window.scrollY / h * 100) + '%';
+    btn.classList.toggle('show', window.scrollY > 500);
+  }, {passive:true});
+
+  // Intersection observer for fade-in
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+  }, {threshold:0.08, rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.day-section').forEach(s => io.observe(s));
+})();
+</script>
+
 </body>
 </html>
