@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>USA Road Trip 2026 — La Guida Definitiva</title>
+<title>USA Road Trip 2026 — Il Libro Guida Definitivo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Source+Sans+3:wght@300;400;600;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
 <style>
@@ -134,23 +134,50 @@ tr:hover td { background:rgba(184,92,56,0.04); }
   body { font-size:11pt; }
 }
 </style>
+
+<style>
+/* EXTRA STYLES FOR MERGED BOOK */
+.section-divider { text-align:center; margin:3rem 0; color:var(--border); font-size:1.5rem; letter-spacing:1em; }
+.sub-section { margin:2rem 0; }
+.sub-section > h3 { font-size:1.4rem; color:var(--accent); border-bottom:2px solid var(--border); padding-bottom:0.4rem; margin-bottom:1rem; }
+.place-card ul { padding-left:1.5rem; margin:0.5rem 0; }
+.place-card li { margin-bottom:0.3rem; }
+.place-card p { margin-bottom:0.6rem; }
+.km-badge { display:inline-block; background:var(--dark); color:var(--gold); padding:0.2rem 0.8rem; border-radius:20px; font-family:'JetBrains Mono',monospace; font-size:0.8rem; margin-right:0.5rem; }
+.hotel-card { background:linear-gradient(135deg,#f5f0fa,#ede5f5); border-left:4px solid #6B4C8B; border-radius:12px; padding:1.5rem; margin:1rem 0; box-shadow:0 2px 8px var(--shadow); }
+.hotel-card h4 { color:#6B4C8B; margin-bottom:0.5rem; }
+.parking-info { background:linear-gradient(135deg,#f0f5f8,#e5edf5); border-left:4px solid #4A7C9B; border-radius:8px; padding:1rem 1.5rem; margin:0.8rem 0; }
+.parking-info::before { content:'🅿️ '; font-size:1.1rem; }
+.route-banner { background:linear-gradient(90deg,var(--accent),var(--gold)); color:white; text-align:center; padding:0.8rem; border-radius:8px; margin:1.5rem 0; font-family:'Playfair Display',serif; font-size:1.1rem; letter-spacing:0.05em; }
+.star-highlight { position:relative; }
+.star-highlight::after { content:'⭐'; position:absolute; top:-0.5rem; right:-0.5rem; font-size:1.2rem; }
+@media print {
+  .hero { min-height:auto; padding:3rem 2rem; }
+  .day-header { break-before:page; }
+  .place-card { break-inside:avoid; }
+}
+</style>
+
 </head>
 <body>
 
-<!-- ============ HERO ============ -->
 <div class="hero">
   <div class="hero-content">
     <div class="details">18 AGOSTO — 1 SETTEMBRE 2026</div>
     <h1>USA ROAD TRIP 2026</h1>
-    <div class="subtitle">La Guida Definitiva del Far West</div>
-    <div class="details" style="margin-top:1rem;">California · Nevada · Utah · Arizona · Route 66<br>5 Stati · 15 Giorni · 5.000+ km · 7 Parchi Nazionali</div>
+    <div class="subtitle">Il Libro Guida Definitivo del Far West</div>
+    <div class="details" style="margin-top:0.8rem;">California · Nevada · Utah · Arizona · Route 66</div>
+    <div class="details" style="margin-top:0.5rem;font-size:0.85rem;letter-spacing:0.1em;">5 Stati · 15 Giorni · 5.000+ km · 7 Parchi Nazionali · 1 Oceano</div>
+    <div style="margin-top:2rem;padding:1rem 2rem;border:1px solid rgba(201,168,76,0.3);border-radius:8px;display:inline-block;">
+      <div style="color:var(--gold);font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;margin-bottom:0.3rem;">Volo</div>
+      <div style="color:#d4c4b0;font-size:0.9rem;">FCO → Ontario (CA) | LAX → Roma FCO</div>
+    </div>
   </div>
   <div class="scroll-hint">↓ Scorri per iniziare l'avventura ↓</div>
 </div>
 
-<!-- ============ INDICE ============ -->
 <div class="toc">
-  <h2>Indice della Guida</h2>
+  <h2>Indice del Libro</h2>
   <div class="toc-grid">
     <a href="#logistica"><span class="day-num">§1</span> Logistica e Preparazione</a>
     <a href="#pass"><span class="day-num">§2</span> America the Beautiful Pass</a>
@@ -163,7 +190,7 @@ tr:hover td { background:rgba(184,92,56,0.04); }
     <a href="#day7"><span class="day-num">Day 7</span> 24 Ago — Sequoia + Kings Canyon</a>
     <a href="#day8"><span class="day-num">Day 8</span> 25 Ago — Death Valley + Las Vegas</a>
     <a href="#day9"><span class="day-num">Day 9</span> 26 Ago — Valley of Fire + Las Vegas</a>
-    <a href="#day10"><span class="day-num">Day 10</span> 27 Ago — Zion + Bryce Canyon</a>
+    <a href="#day10"><span class="day-num">Day 10</span> 27 Ago — Zion + Bryce Canyon + Page</a>
     <a href="#day11"><span class="day-num">Day 11</span> 28 Ago — Antelope Canyon + Monument Valley ⭐</a>
     <a href="#day12"><span class="day-num">Day 12</span> 29 Ago — Grand Canyon South Rim</a>
     <a href="#day13"><span class="day-num">Day 13</span> 30 Ago — Route 66 Completa</a>
@@ -1178,5 +1205,6 @@ tr:hover td { background:rgba(184,92,56,0.04); }
   <p>On the Road USA 2026 — Far West Ultimate Road Trip</p>
   <p style="font-size:0.8rem;margin-top:1rem;opacity:0.6;">Orari, prezzi e informazioni sono indicativi e soggetti a variazione. Verificare sempre prenotazioni e condizioni prima della partenza.</p>
 </div>
+
 </body>
 </html>
