@@ -12,7 +12,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#000000">
+<meta name="theme-color" content="#1F1612">
 <meta name="description" content="USA Road Trip 2026 — 15 giorni, 5 stati, 7 parchi nazionali. Dalla costa del Pacifico al Grand Canyon.">
 <title>USA Road Trip 2026 — Far West Edition</title>
 
@@ -28,14 +28,14 @@
 html { scroll-behavior: smooth; }
 
 :root {
-  --bg:           #000000;
-  --bg-elev:      #0A0A0A;
-  --bg-elev-2:    #121212;
+  --bg:           #1F1612;     /* marrone scuro caldo (cuoio/espresso) */
+  --bg-elev:      #271D17;
+  --bg-elev-2:    #2F2419;
   --line:         rgba(255,255,255,0.10);
   --line-strong:  rgba(255,255,255,0.20);
   --text:         #FFFFFF;
-  --text-muted:   #A0A0A0;
-  --text-faint:   #6B6B6B;
+  --text-muted:   #B8A99A;     /* sand muted */
+  --text-faint:   #7A6E62;
   --accent:       #FFFFFF;     /* monochrome accent */
   --accent-warm:  #E8B47A;     /* desert sand for highlights */
   --accent-deep:  #C77F3E;     /* terracotta accent for tags */
@@ -223,9 +223,6 @@ img { max-width: 100%; display: block; }
   gap: 32px;
   align-items: end;
 }
-@media (min-width: 980px) {
-  .hero__grid { grid-template-columns: 1.3fr 1fr; }
-}
 
 .hero__edition {
   display: flex;
@@ -314,34 +311,6 @@ img { max-width: 100%; display: block; }
   backdrop-filter: blur(10px);
 }
 .btn--ghost:hover { background: rgba(255,255,255,0.15); }
-
-/* Hero badge top-right */
-.hero__badge {
-  align-self: end;
-  justify-self: start;
-  padding: 14px 22px;
-  border-radius: 14px;
-  font-size: 17px;
-  font-weight: 300;
-  color: #fff;
-  letter-spacing: -0.02em;
-  opacity: 0;
-  transform: translateY(8px);
-  transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
-  transition-delay: 1.5s;
-}
-@media (min-width: 980px) {
-  .hero__badge { justify-self: end; }
-}
-.hero__badge.in { opacity: 1; transform: translateY(0); }
-.hero__badge__num {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
-  color: var(--accent-warm);
-  letter-spacing: 0.05em;
-  display: block;
-  margin-bottom: 6px;
-}
 
 .hero__scroll {
   position: absolute;
@@ -946,35 +915,55 @@ tr:last-child td { border-bottom: none; }
 .chapters__head { margin-bottom: 56px; max-width: 800px; }
 .chapters__list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 0;
+  border-top: 1px solid rgba(255,255,255,0.08);
 }
 .chapters__list a {
   padding: 18px 22px;
-  border-bottom: 1px solid rgba(255,255,255,0.06);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
   display: flex;
   align-items: center;
-  gap: 18px;
+  gap: 20px;
   color: var(--text);
-  transition: background 0.2s var(--ease-out), padding-left 0.2s var(--ease-out);
+  transition: background 0.25s var(--ease-out), padding-left 0.25s var(--ease-out), border-color 0.25s var(--ease-out);
+  text-decoration: none;
+  position: relative;
 }
 .chapters__list a:hover {
-  background: rgba(255,255,255,0.04);
-  padding-left: 28px;
+  background: rgba(232,180,122,0.06);
+  padding-left: 30px;
   opacity: 1;
+  border-bottom-color: rgba(232,180,122,0.30);
 }
-.chapters__list a__num {
+.chapter-num {
   font-family: 'JetBrains Mono', monospace;
   font-size: 11px;
+  font-weight: 500;
   color: var(--accent-warm);
   letter-spacing: 0.1em;
-  min-width: 50px;
+  min-width: 48px;
+  flex-shrink: 0;
+  text-transform: uppercase;
 }
-.chapters__list a__title {
+.chapter-title {
   font-size: 14px;
   font-weight: 400;
   letter-spacing: -0.01em;
+  color: rgba(255,255,255,0.92);
   flex: 1;
+  line-height: 1.3;
+}
+.chapters__list a:hover .chapter-title { color: #fff; }
+.chapters__list a::after {
+  content: '→';
+  font-size: 16px;
+  color: rgba(255,255,255,0.25);
+  transition: transform 0.2s var(--ease-out), color 0.2s var(--ease-out);
+}
+.chapters__list a:hover::after {
+  color: var(--accent-warm);
+  transform: translateX(4px);
 }
 
 /* ==========================================================
@@ -1021,10 +1010,10 @@ tr:last-child td { border-bottom: none; }
 .fab__btn {
   width: 44px; height: 44px;
   border-radius: 12px;
-  background: rgba(0,0,0,0.7);
+  background: rgba(39, 29, 23, 0.85);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.15);
   color: #fff;
   cursor: pointer;
   display: flex;
@@ -1041,7 +1030,7 @@ tr:last-child td { border-bottom: none; }
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.85);
+  background: rgba(31, 22, 18, 0.92);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   z-index: 950;
@@ -1088,8 +1077,36 @@ tr:last-child td { border-bottom: none; }
 .overlay__close:hover { background: rgba(255,255,255,0.15); transform: rotate(90deg); }
 .overlay__list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 0;
+  border-top: 1px solid rgba(255,255,255,0.08);
+}
+.overlay__list a {
+  padding: 18px 22px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  color: var(--text);
+  transition: background 0.25s var(--ease-out), padding-left 0.25s var(--ease-out), border-color 0.25s var(--ease-out);
+  text-decoration: none;
+}
+.overlay__list a:hover {
+  background: rgba(232,180,122,0.08);
+  padding-left: 30px;
+  opacity: 1;
+  border-bottom-color: rgba(232,180,122,0.30);
+}
+.overlay__list a::after {
+  content: '→';
+  font-size: 16px;
+  color: rgba(255,255,255,0.25);
+  margin-left: auto;
+  transition: transform 0.2s var(--ease-out), color 0.2s var(--ease-out);
+}
+.overlay__list a:hover::after {
+  color: var(--accent-warm);
+  transform: translateX(4px);
 }
 
 /* ==========================================================
@@ -1103,7 +1120,6 @@ tr:last-child td { border-bottom: none; }
   .hero__title .char,
   .hero__lead,
   .hero__actions,
-  .hero__badge,
   .reveal {
     opacity: 1 !important;
     transform: none !important;
@@ -1189,11 +1205,6 @@ tr:last-child td { border-bottom: none; }
           <div class="hero__stat"><div class="hero__stat__num">1</div><div class="hero__stat__label">Oceano</div></div>
         </div>
       </div>
-
-      <div class="hero__badge liquid-glass" id="heroBadge">
-        <span class="hero__badge__num">CAPITOLO DI COPERTINA</span>
-        Antelope Canyon &amp; Monument Valley.
-      </div>
     </div>
   </div>
 
@@ -1221,7 +1232,7 @@ tr:last-child td { border-bottom: none; }
     <a href="#day8" class="route__card"><span class="route__card__bg" style="background-image:url(https://images.unsplash.com/photo-1691763731792-c5ee77f9112a?auto=format&amp;fit=crop&amp;w=600&amp;q=70)"></span><div class="route__card__num">Day 08 · 25 Ago</div><div class="route__card__name">Death Valley</div><div class="route__card__state">CA · Nevada</div></a>
     <a href="#day9" class="route__card"><span class="route__card__bg" style="background-image:url(https://images.unsplash.com/photo-1664387572569-2a95ee67c60f?auto=format&amp;fit=crop&amp;w=600&amp;q=70)"></span><div class="route__card__num">Day 09 · 26 Ago</div><div class="route__card__name">Valley of Fire</div><div class="route__card__state">Nevada</div></a>
     <a href="#day10" class="route__card"><span class="route__card__bg" style="background-image:url(https://images.unsplash.com/photo-1564114615572-2cb0adc5c88a?auto=format&amp;fit=crop&amp;w=600&amp;q=70)"></span><div class="route__card__num">Day 10 · 27 Ago</div><div class="route__card__name">Zion · Bryce · Page</div><div class="route__card__state">Utah</div></a>
-    <a href="#day11" class="route__card route__card--feature"><span class="route__card__bg" style="background-image:url(https://images.unsplash.com/photo-1495580847032-db0bac41d44b?auto=format&amp;fit=crop&amp;w=600&amp;q=70)"></span><div class="route__card__num">Day 11 · 28 Ago — Capitolo di copertina</div><div class="route__card__name">Antelope Canyon &amp; Monument Valley</div><div class="route__card__state">Navajo Nation, Arizona</div></a>
+    <a href="#day11" class="route__card route__card--feature"><span class="route__card__bg" style="background-image:url(https://images.unsplash.com/photo-1495580847032-db0bac41d44b?auto=format&amp;fit=crop&amp;w=600&amp;q=70)"></span><div class="route__card__num">Day 11 · 28 Ago</div><div class="route__card__name">Antelope Canyon &amp; Monument Valley</div><div class="route__card__state">Navajo Nation, Arizona</div></a>
     <a href="#day12" class="route__card"><span class="route__card__bg" style="background-image:url(https://images.unsplash.com/photo-1502724808734-6bcfafb27423?auto=format&amp;fit=crop&amp;w=600&amp;q=70)"></span><div class="route__card__num">Day 12 · 29 Ago</div><div class="route__card__name">Grand Canyon</div><div class="route__card__state">South Rim, Arizona</div></a>
     <a href="#day13" class="route__card"><span class="route__card__bg" style="background-image:url(https://images.unsplash.com/photo-1695609861021-91cba5246953?auto=format&amp;fit=crop&amp;w=600&amp;q=70)"></span><div class="route__card__num">Day 13 · 30 Ago</div><div class="route__card__name">Route 66</div><div class="route__card__state">AZ · California</div></a>
     <a href="#day14" class="route__card"><span class="route__card__bg" style="background-image:url(https://images.unsplash.com/photo-1534478942366-1baacaf5f850?auto=format&amp;fit=crop&amp;w=600&amp;q=70)"></span><div class="route__card__num">Day 14 · 31 Ago</div><div class="route__card__name">Joshua Tree &amp; SD</div><div class="route__card__state">California</div></a>
@@ -1239,26 +1250,26 @@ tr:last-child td { border-bottom: none; }
       <h2 class="section__title">Tutto il <em>viaggio</em>, in ordine.</h2>
     </div>
     <div class="chapters__list">
-      <a href="#logistica"><span class="chapters__list a__num">§1</span><span class="chapters__list a__title">Informazioni Logistiche</span></a>
-      <a href="#pass"><span class="chapters__list a__num">§2</span><span class="chapters__list a__title">America the Beautiful Pass</span></a>
-      <a href="#day1"><span class="chapters__list a__num">D01</span><span class="chapters__list a__title">Ontario · arrivo</span></a>
-      <a href="#day2"><span class="chapters__list a__num">D02</span><span class="chapters__list a__title">Los Angeles</span></a>
-      <a href="#day3"><span class="chapters__list a__num">D03</span><span class="chapters__list a__title">Pacific Coast Highway</span></a>
-      <a href="#day4"><span class="chapters__list a__num">D04</span><span class="chapters__list a__title">Silicon Valley · SF</span></a>
-      <a href="#day5"><span class="chapters__list a__num">D05</span><span class="chapters__list a__title">Alcatraz · Sonora</span></a>
-      <a href="#day6"><span class="chapters__list a__num">D06</span><span class="chapters__list a__title">Yosemite</span></a>
-      <a href="#day7"><span class="chapters__list a__num">D07</span><span class="chapters__list a__title">Sequoia &amp; Kings</span></a>
-      <a href="#day8"><span class="chapters__list a__num">D08</span><span class="chapters__list a__title">Death Valley · LV</span></a>
-      <a href="#day9"><span class="chapters__list a__num">D09</span><span class="chapters__list a__title">Valley of Fire</span></a>
-      <a href="#day10"><span class="chapters__list a__num">D10</span><span class="chapters__list a__title">Zion · Bryce · Page</span></a>
-      <a href="#day11"><span class="chapters__list a__num">D11</span><span class="chapters__list a__title">Antelope &amp; Monument Valley</span></a>
-      <a href="#day12"><span class="chapters__list a__num">D12</span><span class="chapters__list a__title">Grand Canyon</span></a>
-      <a href="#day13"><span class="chapters__list a__num">D13</span><span class="chapters__list a__title">Route 66</span></a>
-      <a href="#day14"><span class="chapters__list a__num">D14</span><span class="chapters__list a__title">Joshua Tree · San Diego</span></a>
-      <a href="#day15"><span class="chapters__list a__num">D15</span><span class="chapters__list a__title">Finale · LA → Roma</span></a>
-      <a href="#valigia"><span class="chapters__list a__num">§3</span><span class="chapters__list a__title">La valigia</span></a>
-      <a href="#souvenir"><span class="chapters__list a__num">§4</span><span class="chapters__list a__title">Souvenir</span></a>
-      <a href="#ottimizzare"><span class="chapters__list a__num">§5</span><span class="chapters__list a__title">Ottimizzare il viaggio</span></a>
+      <a href="#logistica"><span class="chapter-num">§1</span><span class="chapter-title">Informazioni Logistiche</span></a>
+      <a href="#pass"><span class="chapter-num">§2</span><span class="chapter-title">America the Beautiful Pass</span></a>
+      <a href="#day1"><span class="chapter-num">D01</span><span class="chapter-title">Ontario · arrivo</span></a>
+      <a href="#day2"><span class="chapter-num">D02</span><span class="chapter-title">Los Angeles</span></a>
+      <a href="#day3"><span class="chapter-num">D03</span><span class="chapter-title">Pacific Coast Highway</span></a>
+      <a href="#day4"><span class="chapter-num">D04</span><span class="chapter-title">Silicon Valley · SF</span></a>
+      <a href="#day5"><span class="chapter-num">D05</span><span class="chapter-title">Alcatraz · Sonora</span></a>
+      <a href="#day6"><span class="chapter-num">D06</span><span class="chapter-title">Yosemite</span></a>
+      <a href="#day7"><span class="chapter-num">D07</span><span class="chapter-title">Sequoia &amp; Kings</span></a>
+      <a href="#day8"><span class="chapter-num">D08</span><span class="chapter-title">Death Valley · LV</span></a>
+      <a href="#day9"><span class="chapter-num">D09</span><span class="chapter-title">Valley of Fire</span></a>
+      <a href="#day10"><span class="chapter-num">D10</span><span class="chapter-title">Zion · Bryce · Page</span></a>
+      <a href="#day11"><span class="chapter-num">D11</span><span class="chapter-title">Antelope &amp; Monument Valley</span></a>
+      <a href="#day12"><span class="chapter-num">D12</span><span class="chapter-title">Grand Canyon</span></a>
+      <a href="#day13"><span class="chapter-num">D13</span><span class="chapter-title">Route 66</span></a>
+      <a href="#day14"><span class="chapter-num">D14</span><span class="chapter-title">Joshua Tree · San Diego</span></a>
+      <a href="#day15"><span class="chapter-num">D15</span><span class="chapter-title">Finale · LA → Roma</span></a>
+      <a href="#valigia"><span class="chapter-num">§3</span><span class="chapter-title">La valigia</span></a>
+      <a href="#souvenir"><span class="chapter-num">§4</span><span class="chapter-title">Souvenir</span></a>
+      <a href="#ottimizzare"><span class="chapter-num">§5</span><span class="chapter-title">Ottimizzare il viaggio</span></a>
     </div>
   </div>
 </section>
@@ -2334,28 +2345,28 @@ tr:last-child td { border-bottom: none; }
       <button class="overlay__close" id="overlayClose" aria-label="Chiudi">×</button>
     </div>
     <div class="overlay__list">
-      <a href="#top"><span class="chapters__list a__num">↑</span><span class="chapters__list a__title">Inizio</span></a>
-      <a href="#overview"><span class="chapters__list a__num">§0</span><span class="chapters__list a__title">L'itinerario</span></a>
-      <a href="#logistica"><span class="chapters__list a__num">§1</span><span class="chapters__list a__title">Logistica</span></a>
-      <a href="#pass"><span class="chapters__list a__num">§2</span><span class="chapters__list a__title">America the Beautiful</span></a>
-      <a href="#day1"><span class="chapters__list a__num">D01</span><span class="chapters__list a__title">Ontario</span></a>
-      <a href="#day2"><span class="chapters__list a__num">D02</span><span class="chapters__list a__title">Los Angeles</span></a>
-      <a href="#day3"><span class="chapters__list a__num">D03</span><span class="chapters__list a__title">Pacific Coast</span></a>
-      <a href="#day4"><span class="chapters__list a__num">D04</span><span class="chapters__list a__title">Silicon Valley · SF</span></a>
-      <a href="#day5"><span class="chapters__list a__num">D05</span><span class="chapters__list a__title">Alcatraz</span></a>
-      <a href="#day6"><span class="chapters__list a__num">D06</span><span class="chapters__list a__title">Yosemite</span></a>
-      <a href="#day7"><span class="chapters__list a__num">D07</span><span class="chapters__list a__title">Sequoia &amp; Kings</span></a>
-      <a href="#day8"><span class="chapters__list a__num">D08</span><span class="chapters__list a__title">Death Valley</span></a>
-      <a href="#day9"><span class="chapters__list a__num">D09</span><span class="chapters__list a__title">Valley of Fire</span></a>
-      <a href="#day10"><span class="chapters__list a__num">D10</span><span class="chapters__list a__title">Zion · Bryce</span></a>
-      <a href="#day11"><span class="chapters__list a__num">D11</span><span class="chapters__list a__title">Antelope · Monument</span></a>
-      <a href="#day12"><span class="chapters__list a__num">D12</span><span class="chapters__list a__title">Grand Canyon</span></a>
-      <a href="#day13"><span class="chapters__list a__num">D13</span><span class="chapters__list a__title">Route 66</span></a>
-      <a href="#day14"><span class="chapters__list a__num">D14</span><span class="chapters__list a__title">Joshua Tree · SD</span></a>
-      <a href="#day15"><span class="chapters__list a__num">D15</span><span class="chapters__list a__title">Finale</span></a>
-      <a href="#valigia"><span class="chapters__list a__num">§3</span><span class="chapters__list a__title">La valigia</span></a>
-      <a href="#souvenir"><span class="chapters__list a__num">§4</span><span class="chapters__list a__title">Souvenir</span></a>
-      <a href="#ottimizzare"><span class="chapters__list a__num">§5</span><span class="chapters__list a__title">Ottimizzare</span></a>
+      <a href="#top"><span class="chapter-num">↑</span><span class="chapter-title">Inizio</span></a>
+      <a href="#overview"><span class="chapter-num">§0</span><span class="chapter-title">L'itinerario</span></a>
+      <a href="#logistica"><span class="chapter-num">§1</span><span class="chapter-title">Logistica</span></a>
+      <a href="#pass"><span class="chapter-num">§2</span><span class="chapter-title">America the Beautiful</span></a>
+      <a href="#day1"><span class="chapter-num">D01</span><span class="chapter-title">Ontario</span></a>
+      <a href="#day2"><span class="chapter-num">D02</span><span class="chapter-title">Los Angeles</span></a>
+      <a href="#day3"><span class="chapter-num">D03</span><span class="chapter-title">Pacific Coast</span></a>
+      <a href="#day4"><span class="chapter-num">D04</span><span class="chapter-title">Silicon Valley · SF</span></a>
+      <a href="#day5"><span class="chapter-num">D05</span><span class="chapter-title">Alcatraz</span></a>
+      <a href="#day6"><span class="chapter-num">D06</span><span class="chapter-title">Yosemite</span></a>
+      <a href="#day7"><span class="chapter-num">D07</span><span class="chapter-title">Sequoia &amp; Kings</span></a>
+      <a href="#day8"><span class="chapter-num">D08</span><span class="chapter-title">Death Valley</span></a>
+      <a href="#day9"><span class="chapter-num">D09</span><span class="chapter-title">Valley of Fire</span></a>
+      <a href="#day10"><span class="chapter-num">D10</span><span class="chapter-title">Zion · Bryce</span></a>
+      <a href="#day11"><span class="chapter-num">D11</span><span class="chapter-title">Antelope · Monument</span></a>
+      <a href="#day12"><span class="chapter-num">D12</span><span class="chapter-title">Grand Canyon</span></a>
+      <a href="#day13"><span class="chapter-num">D13</span><span class="chapter-title">Route 66</span></a>
+      <a href="#day14"><span class="chapter-num">D14</span><span class="chapter-title">Joshua Tree · SD</span></a>
+      <a href="#day15"><span class="chapter-num">D15</span><span class="chapter-title">Finale</span></a>
+      <a href="#valigia"><span class="chapter-num">§3</span><span class="chapter-title">La valigia</span></a>
+      <a href="#souvenir"><span class="chapter-num">§4</span><span class="chapter-title">Souvenir</span></a>
+      <a href="#ottimizzare"><span class="chapter-num">§5</span><span class="chapter-title">Ottimizzare</span></a>
     </div>
   </div>
 </div>
@@ -2416,14 +2427,12 @@ tr:last-child td { border-bottom: none; }
       });
     });
 
-    // Trigger lead/actions/badge after the title finishes
+    // Trigger lead/actions after the title finishes
     const totalCharTime = initialDelay + globalIndex * charDelay;
     const heroLead = document.getElementById('heroLead');
     const heroActions = document.getElementById('heroActions');
-    const heroBadge = document.getElementById('heroBadge');
     if (heroLead) setTimeout(() => heroLead.classList.add('in'), Math.max(900, totalCharTime - 600));
     if (heroActions) setTimeout(() => heroActions.classList.add('in'), Math.max(1200, totalCharTime - 300));
-    if (heroBadge) setTimeout(() => heroBadge.classList.add('in'), Math.max(1500, totalCharTime));
   }
 
   if (!reduceMotion) {
@@ -2432,7 +2441,6 @@ tr:last-child td { border-bottom: none; }
     // Render plain
     document.getElementById('heroLead')?.classList.add('in');
     document.getElementById('heroActions')?.classList.add('in');
-    document.getElementById('heroBadge')?.classList.add('in');
   }
 
   // ----------------------------------------------------------
